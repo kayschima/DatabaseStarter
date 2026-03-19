@@ -1,0 +1,32 @@
+{
+  "BasePath": "C:\\Users\\Kay\\AppData\\Local\\DatabaseStarter",
+  "Instances": [
+    {
+      "Engine": 0,
+      "Version": "8.4.7",
+      "InstallPath": "C:\\Users\\Kay\\AppData\\Local\\DatabaseStarter\\MySQL",
+      "Port": 3306,
+      "DataDir": "C:\\Users\\Kay\\AppData\\Local\\DatabaseStarter\\MySQL\\data",
+      "ProcessId": 0,
+      "IsInitialized": false
+    },
+    {
+      "Engine": 1,
+      "Version": "11.8.6",
+      "InstallPath": "C:\\Users\\Kay\\AppData\\Local\\DatabaseStarter\\MariaDB",
+      "Port": 3307,
+      "DataDir": "C:\\Users\\Kay\\AppData\\Local\\DatabaseStarter\\MariaDB\\data",
+      "ProcessId": 0,
+      "IsInitialized": false
+    },
+    {
+      "Engine": 2,
+      "Version": "17.2",
+      "InstallPath": "C:\\Users\\Kay\\AppData\\Local\\DatabaseStarter\\PostgreSQL",
+      "Port": 5432,
+      "DataDir": "C:\\Users\\Kay\\AppData\\Local\\DatabaseStarter\\PostgreSQL\\data",
+      "ProcessId": 0,
+      "IsInitialized": false
+    }
+  ]
+}
