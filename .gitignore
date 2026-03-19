@@ -1,1 +1,5 @@
 /DatabaseStarter/bin/
+/DatabaseStarter/obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
