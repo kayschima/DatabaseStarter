@@ -13,35 +13,35 @@
         Background="#FF1E1E2E">
 
     <Window.Resources>
-        <converters:StatusToBrushConverter x:Key="StatusToBrushConverter"/>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        <converters:StatusToBrushConverter x:Key="StatusToBrushConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
 
         <!-- Compact Button Style -->
         <Style x:Key="ActionButton" TargetType="Button">
-            <Setter Property="MinWidth" Value="90"/>
-            <Setter Property="Height" Value="28"/>
-            <Setter Property="Margin" Value="3,0"/>
-            <Setter Property="Padding" Value="10,4"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="MinWidth" Value="90" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Margin" Value="3,0" />
+            <Setter Property="Padding" Value="10,4" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="White" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="5"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.4"/>
+                                <Setter Property="Opacity" Value="0.4" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.85"/>
+                                <Setter Property="Opacity" Value="0.85" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -50,23 +50,220 @@
         </Style>
 
         <Style x:Key="InstallButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
-            <Setter Property="Background" Value="#FF4CAF50"/>
+            <Setter Property="Background" Value="#FF4CAF50" />
         </Style>
         <Style x:Key="StartButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
-            <Setter Property="Background" Value="#FF2196F3"/>
+            <Setter Property="Background" Value="#FF2196F3" />
         </Style>
         <Style x:Key="StopButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
-            <Setter Property="Background" Value="#FFFF9800"/>
+            <Setter Property="Background" Value="#FFFF9800" />
         </Style>
         <Style x:Key="UninstallButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
-            <Setter Property="Background" Value="#FFF44336"/>
+            <Setter Property="Background" Value="#FFF44336" />
+        </Style>
+
+        <!-- Dark CheckBox Style -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#FFCDD6F4" />
+            <Setter Property="Background" Value="#FF45475A" />
+            <Setter Property="BorderBrush" Value="#FF585B70" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="6,0,0,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <BulletDecorator Background="Transparent" SnapsToDevicePixels="true">
+                            <BulletDecorator.Bullet>
+                                <Border x:Name="checkBoxBorder"
+                                        CornerRadius="3"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Width="16" Height="16">
+                                    <Path x:Name="optionMark"
+                                          Fill="#FFCDD6F4"
+                                          Margin="2"
+                                          Data="M 0,4 L 3,7 L 9,0 L 9,2 L 3,9 L 0,6 Z"
+                                          Stretch="Uniform"
+                                          Opacity="0" />
+                                </Border>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="checkBoxBorder" Property="Background" Value="#FF585B70" />
+                                <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="#FF89B4FA" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="optionMark" Property="Opacity" Value="1" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter TargetName="optionMark" Property="Data" Value="M 0,7 L 7,7 L 7,0 L 0,0 Z" />
+                                <Setter TargetName="optionMark" Property="Opacity" Value="1" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Dark ComboBoxItem Style -->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#FFCDD6F4" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#FF585B70" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#FF89B4FA" />
+                                <Setter Property="Foreground" Value="#FF11111B" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Dark ComboBox Style -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#FF45475A" />
+            <Setter Property="Foreground" Value="#FFCDD6F4" />
+            <Setter Property="BorderBrush" Value="#FF585B70" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="6,3" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid x:Name="MainGrid" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition MinWidth="{x:Static SystemParameters.VerticalScrollBarWidth}"
+                                                  Width="0" />
+                            </Grid.ColumnDefinitions>
+                            <Popup x:Name="PART_Popup"
+                                   AllowsTransparency="True"
+                                   Grid.ColumnSpan="2"
+                                   IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Margin="1"
+                                   PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+                                   Placement="Bottom">
+                                <Border x:Name="DropDownBorder"
+                                        Background="#FF313244"
+                                        BorderBrush="#FF585B70"
+                                        BorderThickness="1"
+                                        CornerRadius="5"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+                                    <ScrollViewer x:Name="DropDownScrollViewer">
+                                        <Grid x:Name="Grid" RenderOptions.ClearTypeHint="Enabled">
+                                            <Canvas x:Name="Canvas" HorizontalAlignment="Left" Height="0"
+                                                    VerticalAlignment="Top" Width="0">
+                                                <Rectangle x:Name="OpaqueRect"
+                                                           Fill="{Binding Background, ElementName=DropDownBorder}"
+                                                           Height="{Binding ActualHeight, ElementName=DropDownBorder}"
+                                                           Width="{Binding ActualWidth, ElementName=DropDownBorder}" />
+                                            </Canvas>
+                                            <ItemsPresenter x:Name="ItemsPresenter"
+                                                            KeyboardNavigation.DirectionalNavigation="Contained"
+                                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                            <ToggleButton x:Name="ToggleButton"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          Grid.ColumnSpan="2"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="templateRoot"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="5"
+                                                SnapsToDevicePixels="True">
+                                            <Border x:Name="splitBorder"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="1"
+                                                    HorizontalAlignment="Right"
+                                                    Margin="0"
+                                                    SnapsToDevicePixels="True"
+                                                    Width="{x:Static SystemParameters.VerticalScrollBarWidth}">
+                                                <Path x:Name="arrow"
+                                                      Data="M 0,0 L 3.5,4 L 7,0 Z"
+                                                      Fill="#FFCDD6F4"
+                                                      HorizontalAlignment="Center"
+                                                      Margin="0"
+                                                      VerticalAlignment="Center" />
+                                            </Border>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="templateRoot" Property="Background"
+                                                        Value="#FF585B70" />
+                                                <Setter TargetName="templateRoot" Property="BorderBrush"
+                                                        Value="#FF89B4FA" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              IsHitTestVisible="False"
+                                              Margin="{TemplateBinding Padding}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter TargetName="DropDownBorder" Property="Height" Value="95" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -74,9 +271,9 @@
             <StackPanel>
                 <TextBlock Text="🗄️ Database Starter"
                            FontSize="24" FontWeight="Bold"
-                           Foreground="#FFCDD6F4"/>
+                           Foreground="#FFCDD6F4" />
                 <TextBlock Text="Portable MySQL, MariaDB &amp; PostgreSQL Instanzen verwalten"
-                           FontSize="13" Foreground="#FFA6ADC8" Margin="0,4,0,0"/>
+                           FontSize="13" Foreground="#FFA6ADC8" Margin="0,4,0,0" />
             </StackPanel>
         </Border>
 
@@ -89,42 +286,42 @@
                                 Padding="14,8" BorderBrush="#FF45475A" BorderThickness="1">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <!-- Row 0: Engine icon/name + version selector + status -->
                                 <DockPanel Grid.Row="0" Margin="0,0,0,4">
                                     <Ellipse DockPanel.Dock="Left" Width="10" Height="10"
                                              Fill="{Binding Status, Converter={StaticResource StatusToBrushConverter}}"
-                                             Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                             Margin="0,0,8,0" VerticalAlignment="Center" />
                                     <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,12,0">
-                                        <Run Text="{Binding EngineIcon, Mode=OneWay}" FontSize="16"/>
-                                        <Run Text=" "/>
+                                        <Run Text="{Binding EngineIcon, Mode=OneWay}" FontSize="16" />
+                                        <Run Text=" " />
                                         <Run Text="{Binding EngineName, Mode=OneWay}"
-                                             FontSize="15" FontWeight="Bold" Foreground="#FFCDD6F4"/>
+                                             FontSize="15" FontWeight="Bold" Foreground="#FFCDD6F4" />
                                     </TextBlock>
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding StatusText}"
                                                FontSize="11" Foreground="#FFA6ADC8"
                                                VerticalAlignment="Center" HorizontalAlignment="Right"
-                                               Margin="8,0,0,0"/>
-                                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                                               Margin="8,0,0,0" />
+                                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal"
+                                                VerticalAlignment="Center">
                                         <TextBlock Text="Version:" Foreground="#FF6C7086" FontSize="11"
-                                                   VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                                   VerticalAlignment="Center" Margin="0,0,5,0" />
                                         <ComboBox ItemsSource="{Binding AvailableVersions}"
                                                   SelectedItem="{Binding SelectedVersion}"
                                                   IsEnabled="{Binding CanChangeVersion}"
                                                   DisplayMemberPath="DisplayName"
                                                   MinWidth="150" Height="24"
                                                   FontSize="11"
-                                                  Background="#FF45475A" Foreground="#FFCDD6F4"
-                                                  BorderBrush="#FF585B70" BorderThickness="1"/>
+                                                  VerticalContentAlignment="Center" />
                                         <TextBlock Text="(fixiert)"
                                                    Foreground="#FF585B70" FontSize="10" FontStyle="Italic"
                                                    VerticalAlignment="Center" Margin="6,0,0,0"
-                                                   Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                   Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVisibilityConverter}}" />
                                     </StackPanel>
                                 </DockPanel>
 
@@ -132,12 +329,12 @@
                                 <DockPanel Grid.Row="1" Margin="18,0,0,4">
                                     <WrapPanel DockPanel.Dock="Left" VerticalAlignment="Center">
                                         <TextBlock Foreground="#FF6C7086" FontSize="11" Margin="0,0,14,0">
-                                            <Run Text="Port: "/>
-                                            <Run Text="{Binding Port, Mode=OneWay}" Foreground="#FFCDD6F4"/>
+                                            <Run Text="Port: " />
+                                            <Run Text="{Binding Port, Mode=OneWay}" Foreground="#FFCDD6F4" />
                                         </TextBlock>
                                         <TextBlock Foreground="#FF6C7086" FontSize="11">
-                                            <Run Text="Pfad: "/>
-                                            <Run Text="{Binding InstallPath, Mode=OneWay}" Foreground="#FF89B4FA"/>
+                                            <Run Text="Pfad: " />
+                                            <Run Text="{Binding InstallPath, Mode=OneWay}" Foreground="#FF89B4FA" />
                                         </TextBlock>
                                     </WrapPanel>
                                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal"
@@ -147,11 +344,11 @@
                                         <ProgressBar Value="{Binding DownloadProgress}" Height="5" Width="120"
                                                      Minimum="0" Maximum="100"
                                                      Foreground="#FF89B4FA" Background="#FF45475A"
-                                                     BorderThickness="0" VerticalAlignment="Center"/>
+                                                     BorderThickness="0" VerticalAlignment="Center" />
                                         <TextBlock Text="{Binding StatusMessage}"
                                                    Foreground="#FFA6ADC8" FontSize="10" Margin="6,0,0,0"
                                                    VerticalAlignment="Center" MaxWidth="180"
-                                                   TextTrimming="CharacterEllipsis"/>
+                                                   TextTrimming="CharacterEllipsis" />
                                     </StackPanel>
                                 </DockPanel>
 
@@ -159,16 +356,16 @@
                                 <WrapPanel Grid.Row="2" Margin="16,2,0,2">
                                     <Button Content="📥 Installieren"
                                             Style="{StaticResource InstallButton}"
-                                            Command="{Binding InstallCommand}"/>
+                                            Command="{Binding InstallCommand}" />
                                     <Button Content="▶ Starten"
                                             Style="{StaticResource StartButton}"
-                                            Command="{Binding StartCommand}"/>
+                                            Command="{Binding StartCommand}" />
                                     <Button Content="⏹ Stoppen"
                                             Style="{StaticResource StopButton}"
-                                            Command="{Binding StopCommand}"/>
+                                            Command="{Binding StopCommand}" />
                                     <Button Content="🗑 Deinstallieren"
                                             Style="{StaticResource UninstallButton}"
-                                            Command="{Binding UninstallCommand}"/>
+                                            Command="{Binding UninstallCommand}" />
                                 </WrapPanel>
 
                                 <!-- Row 3: Collapsible log -->
@@ -181,7 +378,7 @@
                                              MaxHeight="100" VerticalScrollBarVisibility="Auto"
                                              Background="#FF181825" Foreground="#FFA6ADC8"
                                              BorderThickness="0" FontFamily="Consolas"
-                                             FontSize="10" Padding="6" Margin="0,2,0,0"/>
+                                             FontSize="10" Padding="6" Margin="0,2,0,0" />
                                 </Expander>
                             </Grid>
                         </Border>
