@@ -60,8 +60,8 @@ public class SettingsService
                 {
                     Engine = DatabaseEngine.MySQL,
                     Version = DatabaseDefaults.GetDefaultVersion(DatabaseEngine.MySQL).Version,
-                    InstallPath = Path.Combine(basePath, "MySQL"),
-                    DataDir = Path.Combine(basePath, "MySQL", "data"),
+                    InstallPath = Path.Combine(basePath, "mysql"),
+                    DataDir = Path.Combine(basePath, "mysql", "data"),
                     Port = DatabaseDefaults.MySqlDefaultPort
                 },
                 new()
@@ -84,4 +84,3 @@ public class SettingsService
         };
     }
 }
-

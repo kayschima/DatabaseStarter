@@ -34,24 +34,13 @@ public class MySqlEngineService : IDatabaseEngineService
             {
                 ZipFile.ExtractToDirectory(zipPath, info.InstallPath, overwriteFiles: true);
 
-                // Move contents from subfolder to install path
-                var subFolder = Path.Combine(info.InstallPath, versionInfo.ExtractFolder);
-                if (Directory.Exists(subFolder))
+                // Dynamically find the version-specific subfolder (e.g. "mysql-8.0.44-winx64")
+                // so that binaries always end up directly in InstallPath (e.g. ...\mysql\bin\...)
+                var subFolder = FindExtractedSubFolder(info.InstallPath, versionInfo.ExtractFolder);
+
+                if (subFolder != null && Directory.Exists(subFolder))
                 {
-                    foreach (var dir in Directory.GetDirectories(subFolder))
-                    {
-                        var dest = Path.Combine(info.InstallPath, Path.GetFileName(dir));
-                        if (Directory.Exists(dest)) Directory.Delete(dest, true);
-                        Directory.Move(dir, dest);
-                    }
-
-                    foreach (var file in Directory.GetFiles(subFolder))
-                    {
-                        var dest = Path.Combine(info.InstallPath, Path.GetFileName(file));
-                        if (File.Exists(dest)) File.Delete(dest);
-                        File.Move(file, dest);
-                    }
-
+                    MoveContentsUp(subFolder, info.InstallPath);
                     Directory.Delete(subFolder, true);
                 }
             }, ct);
@@ -152,5 +141,52 @@ public class MySqlEngineService : IDatabaseEngineService
 
         return DatabaseStatus.Installed;
     }
-}
 
+    /// <summary>
+    /// Finds the extracted subfolder inside <paramref name="installPath"/>.
+    /// First tries the explicit <paramref name="expectedFolder"/>, then scans for any
+    /// directory starting with "mysql-" that contains a "bin" folder.
+    /// </summary>
+    private static string? FindExtractedSubFolder(string installPath, string expectedFolder)
+    {
+        // 1. Try the explicitly configured folder name
+        var explicit1 = Path.Combine(installPath, expectedFolder);
+        if (Directory.Exists(explicit1))
+            return explicit1;
+
+        // 2. Scan for any mysql-* subfolder that looks like an extracted archive
+        var candidates = Directory.GetDirectories(installPath, "mysql-*");
+        foreach (var candidate in candidates)
+        {
+            if (Directory.Exists(Path.Combine(candidate, "bin")))
+                return candidate;
+        }
+
+        // 3. If there's exactly one subfolder (and no bin/ at top level yet), use it
+        var allDirs = Directory.GetDirectories(installPath);
+        if (allDirs.Length == 1 && !Directory.Exists(Path.Combine(installPath, "bin")))
+            return allDirs[0];
+
+        return null;
+    }
+
+    /// <summary>
+    /// Moves all files and directories from <paramref name="source"/> into <paramref name="target"/>.
+    /// </summary>
+    private static void MoveContentsUp(string source, string target)
+    {
+        foreach (var dir in Directory.GetDirectories(source))
+        {
+            var dest = Path.Combine(target, Path.GetFileName(dir));
+            if (Directory.Exists(dest)) Directory.Delete(dest, true);
+            Directory.Move(dir, dest);
+        }
+
+        foreach (var file in Directory.GetFiles(source))
+        {
+            var dest = Path.Combine(target, Path.GetFileName(file));
+            if (File.Exists(dest)) File.Delete(dest);
+            File.Move(file, dest);
+        }
+    }
+}
