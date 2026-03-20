@@ -1,12 +1,12 @@
 [Setup]
 AppId={{8E17A3F2-8C6A-4CBA-8D6A-0E0D2E53F4A1}
 AppName=DatabaseStarter
-AppVersion=0.1.1
+AppVersion=0.1.2
 AppPublisher=DatabaseStarter
 DefaultDirName={localappdata}\DatabaseStarter\App
 DefaultGroupName=DatabaseStarter
 DisableProgramGroupPage=yes
-OutputBaseFilename=DatabaseStarter_Setup_0.1.1
+OutputBaseFilename=DatabaseStarter_Setup_0.1.2
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern

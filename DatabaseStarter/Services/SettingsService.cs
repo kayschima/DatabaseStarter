@@ -31,7 +31,14 @@ public class SettingsService
         try
         {
             var json = File.ReadAllText(_settingsPath);
-            return JsonSerializer.Deserialize<AppSettings>(json, JsonOptions) ?? CreateDefaults();
+            var settings = JsonSerializer.Deserialize<AppSettings>(json, JsonOptions) ?? CreateDefaults();
+
+            if (NormalizeInitializationState(settings))
+            {
+                Save(settings);
+            }
+
+            return settings;
         }
         catch
         {
@@ -82,5 +89,39 @@ public class SettingsService
                 }
             }
         };
+    }
+
+    private static bool NormalizeInitializationState(AppSettings settings)
+    {
+        var hasChanges = false;
+
+        foreach (var instance in settings.Instances)
+        {
+            if (instance.IsInitialized || string.IsNullOrWhiteSpace(instance.DataDir))
+            {
+                continue;
+            }
+
+            try
+            {
+                if (!Directory.Exists(instance.DataDir))
+                {
+                    continue;
+                }
+
+                using var entries = Directory.EnumerateFileSystemEntries(instance.DataDir).GetEnumerator();
+                if (entries.MoveNext())
+                {
+                    instance.IsInitialized = true;
+                    hasChanges = true;
+                }
+            }
+            catch
+            {
+                // Ignore inaccessible or invalid data directories and keep the persisted value.
+            }
+        }
+
+        return hasChanges;
     }
 }
