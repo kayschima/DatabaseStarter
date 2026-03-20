@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using DatabaseStarter.Models;
+using DatabaseStarter.Resources;
 using DatabaseStarter.Services;
 
 namespace DatabaseStarter.ViewModels;
@@ -107,13 +108,13 @@ public class DatabaseViewModel : ViewModelBase
 
     public string StatusText => Status switch
     {
-        DatabaseStatus.NotInstalled => "Nicht installiert",
+        DatabaseStatus.NotInstalled => Strings.StatusNotInstalled,
         DatabaseStatus.Installing => DownloadProgress > 0 && DownloadProgress < 100
-            ? $"Wird installiert… {DownloadProgress:F0} %"
-            : "Wird installiert…",
-        DatabaseStatus.Installed => "Installiert (gestoppt)",
-        DatabaseStatus.Running => $"Läuft auf Port {InstanceInfo.Port}",
-        _ => "Unbekannt"
+            ? string.Format(Strings.StatusInstallingProgress, DownloadProgress)
+            : Strings.StatusInstalling,
+        DatabaseStatus.Installed => Strings.StatusInstalled,
+        DatabaseStatus.Running => string.Format(Strings.StatusRunning, InstanceInfo.Port),
+        _ => Strings.StatusUnknown
     };
 
     public bool IsInstalled => Status is DatabaseStatus.Installed or DatabaseStatus.Running;
@@ -180,7 +181,7 @@ public class DatabaseViewModel : ViewModelBase
     {
         IsBusy = true;
         Status = DatabaseStatus.Installing;
-        StatusMessage = "Wird heruntergeladen...";
+        StatusMessage = Strings.MessageDownloading;
         DownloadProgress = 0;
 
         try
@@ -189,27 +190,27 @@ public class DatabaseViewModel : ViewModelBase
             {
                 DownloadProgress = p;
                 StatusMessage = p < 100
-                    ? $"Herunterladen... {p:F1}%"
-                    : "Wird entpackt...";
+                    ? string.Format(Strings.MessageDownloadingProgress, p)
+                    : Strings.MessageExtracting;
             });
 
             await _engineService.InstallAsync(InstanceInfo, progress, CancellationToken.None);
 
-            StatusMessage = "Wird initialisiert...";
+            StatusMessage = Strings.MessageInitializing;
             if (!InstanceInfo.IsInitialized)
             {
                 await _engineService.InitializeAsync(InstanceInfo);
             }
 
-            StatusMessage = "Installation abgeschlossen!";
-            AppendLog($"[{DateTime.Now:HH:mm:ss}] {EngineName} erfolgreich installiert.");
+            StatusMessage = Strings.MessageInstallComplete;
+            AppendLog(string.Format(Strings.LogInstallSuccess, DateTime.Now, EngineName));
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Fehler: {ex.Message}";
-            AppendLog($"[{DateTime.Now:HH:mm:ss}] FEHLER bei Installation: {ex.Message}");
-            MessageBox.Show($"Installation fehlgeschlagen:\n{ex.Message}",
-                "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            StatusMessage = $"{Strings.TitleError}: {ex.Message}";
+            AppendLog(string.Format(Strings.LogInstallError, DateTime.Now, ex.Message));
+            MessageBox.Show(string.Format(Strings.MessageInstallFailed, ex.Message),
+                Strings.TitleError, MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
@@ -223,13 +224,13 @@ public class DatabaseViewModel : ViewModelBase
     private async Task StartAsync()
     {
         IsBusy = true;
-        StatusMessage = "Wird gestartet...";
+        StatusMessage = Strings.MessageStarting;
 
         try
         {
             if (!InstanceInfo.IsInitialized)
             {
-                StatusMessage = "Wird initialisiert...";
+                StatusMessage = Strings.MessageInitializing;
                 await _engineService.InitializeAsync(InstanceInfo);
             }
 
@@ -238,15 +239,15 @@ public class DatabaseViewModel : ViewModelBase
             // Give the server time to start up
             await Task.Delay(2000);
 
-            StatusMessage = $"Läuft (PID: {pid})";
-            AppendLog($"[{DateTime.Now:HH:mm:ss}] {EngineName} gestartet (PID: {pid}, Port: {InstanceInfo.Port}).");
+            StatusMessage = string.Format(Strings.MessageRunningPid, pid);
+            AppendLog(string.Format(Strings.LogStartSuccess, DateTime.Now, EngineName, pid, InstanceInfo.Port));
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Fehler: {ex.Message}";
-            AppendLog($"[{DateTime.Now:HH:mm:ss}] FEHLER beim Start: {ex.Message}");
-            MessageBox.Show($"Start fehlgeschlagen:\n{ex.Message}",
-                "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            StatusMessage = $"{Strings.TitleError}: {ex.Message}";
+            AppendLog(string.Format(Strings.LogStartError, DateTime.Now, ex.Message));
+            MessageBox.Show(string.Format(Strings.MessageStartFailed, ex.Message),
+                Strings.TitleError, MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
@@ -259,20 +260,20 @@ public class DatabaseViewModel : ViewModelBase
     private async Task StopAsync()
     {
         IsBusy = true;
-        StatusMessage = "Wird gestoppt...";
+        StatusMessage = Strings.MessageStopping;
 
         try
         {
             await _engineService.StopAsync(InstanceInfo);
-            StatusMessage = "Gestoppt.";
-            AppendLog($"[{DateTime.Now:HH:mm:ss}] {EngineName} gestoppt.");
+            StatusMessage = Strings.MessageStopped;
+            AppendLog(string.Format(Strings.LogStopSuccess, DateTime.Now, EngineName));
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Fehler: {ex.Message}";
-            AppendLog($"[{DateTime.Now:HH:mm:ss}] FEHLER beim Stoppen: {ex.Message}");
-            MessageBox.Show($"Stoppen fehlgeschlagen:\n{ex.Message}",
-                "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            StatusMessage = $"{Strings.TitleError}: {ex.Message}";
+            AppendLog(string.Format(Strings.LogStopError, DateTime.Now, ex.Message));
+            MessageBox.Show(string.Format(Strings.MessageStopFailed, ex.Message),
+                Strings.TitleError, MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
@@ -285,28 +286,28 @@ public class DatabaseViewModel : ViewModelBase
     private async Task UninstallAsync()
     {
         var result = MessageBox.Show(
-            $"Möchten Sie {EngineName} wirklich deinstallieren?\nAlle Daten werden gelöscht!",
-            "Deinstallation bestätigen",
+            string.Format(Strings.ConfirmUninstallMessage, EngineName),
+            Strings.ConfirmUninstallTitle,
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
 
         if (result != MessageBoxResult.Yes) return;
 
         IsBusy = true;
-        StatusMessage = "Wird deinstalliert...";
+        StatusMessage = Strings.MessageUninstalling;
 
         try
         {
             await _engineService.UninstallAsync(InstanceInfo);
-            StatusMessage = "Deinstalliert.";
-            AppendLog($"[{DateTime.Now:HH:mm:ss}] {EngineName} deinstalliert.");
+            StatusMessage = Strings.MessageUninstalled;
+            AppendLog(string.Format(Strings.LogUninstallSuccess, DateTime.Now, EngineName));
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Fehler: {ex.Message}";
-            AppendLog($"[{DateTime.Now:HH:mm:ss}] FEHLER bei Deinstallation: {ex.Message}");
-            MessageBox.Show($"Deinstallation fehlgeschlagen:\n{ex.Message}",
-                "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            StatusMessage = $"{Strings.TitleError}: {ex.Message}";
+            AppendLog(string.Format(Strings.LogUninstallError, DateTime.Now, ex.Message));
+            MessageBox.Show(string.Format(Strings.MessageUninstallFailed, ex.Message),
+                Strings.TitleError, MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {

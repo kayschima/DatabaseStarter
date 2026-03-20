@@ -1,6 +1,6 @@
 # 🗄️ Database Starter
 
-> Portable MySQL, MariaDB & PostgreSQL Instanzen auf Windows verwalten — ohne klassische Installation.
+> Manage portable MySQL, MariaDB & PostgreSQL instances on Windows — without traditional installation.
 
 ![Version](https://img.shields.io/badge/Version-0.0.1-blue)
 ![.NET](https://img.shields.io/badge/.NET-10.0-purple)
@@ -9,121 +9,126 @@
 
 ---
 
-## 📋 Überblick
+## 📋 Overview
 
-**Database Starter** ist eine WPF-Desktop-Anwendung, mit der portable Datenbank-Server direkt auf dem lokalen Rechner installiert, gestartet, gestoppt und deinstalliert werden können — ganz ohne Administratorrechte und ohne Windows-Dienste.
+**Database Starter** is a WPF desktop application that allows you to install, start, stop, and uninstall portable database servers directly on your local machine — without administrator privileges and without Windows services.
 
-Die Anwendung verwaltet eigenständige, portable Instanzen der folgenden Datenbank-Engines:
+The application manages standalone, portable instances of the following database engines:
 
-| Engine       | Unterstützte Versionen            | Standard-Port |
-|--------------|-----------------------------------|---------------|
-| 🐬 MySQL     | 9.5.0, 8.4.7, 8.0.44              | 3306          |
-| 🦭 MariaDB   | 12.2.2, 11.8.6, 11.4.10, 10.11.16 | 3307          |
-| 🐘 PostgreSQL | 18.3, 17.9, 16.13, 16.3, 15.17    | 5432          |
+| Engine       | Supported Versions                  | Default Port |
+|--------------|-------------------------------------|--------------|
+| 🐬 MySQL     | 9.5.0, 8.4.7, 8.0.44              | 3306         |
+| 🦭 MariaDB   | 12.2.2, 11.8.6, 11.4.10, 10.11.16 | 3307         |
+| 🐘 PostgreSQL | 18.3, 17.9, 16.13, 16.3, 15.17    | 5432         |
 
 ---
 
 ## ✨ Features
 
-- **Ein-Klick-Installation** — Lädt die offizielle portable Distribution herunter und entpackt sie automatisch
-- **Versionsauswahl** — Vor der Installation kann eine spezifische Version je Engine ausgewählt werden
-- **Starten / Stoppen** — Datenbank-Prozesse werden direkt als lokale Prozesse gestartet und gestoppt
-- **Deinstallation** — Entfernt alle Dateien einer Instanz sauber vom System
-- **Fortschrittsanzeige** — Download-Fortschritt in Prozent mit Statusanzeige während der Installation
-- **Live-Status** — Farbige Status-Indikatoren (🔴 Nicht installiert / 🟡 Wird installiert / 🟢 Läuft / 🔵 Gestoppt)
-- **Log-Ausgabe** — Integriertes, aufklappbares Log je Datenbank-Instanz
-- **Einstellungen** — Konfiguration (Pfade, Ports, Versionen) wird automatisch in `settings.json` persistiert
-- **Graceful Shutdown** — Beim Beenden der Anwendung werden alle laufenden Server sauber heruntergefahren
+- **One-Click Installation** — Downloads the official portable distribution and extracts it automatically
+- **Version Selection** — A specific version per engine can be selected before installation
+- **Start / Stop** — Database processes are started and stopped directly as local processes
+- **Uninstallation** — Cleanly removes all files of an instance from the system
+- **Progress Indicator** — Download progress in percent with status display during installation
+- **Live Status** — Colored status indicators (🔴 Not installed / 🟡 Installing / 🟢 Running / 🔵 Stopped)
+- **Log Output** — Integrated, expandable log per database instance
+- **Settings** — Configuration (paths, ports, versions) is automatically persisted in `settings.json`
+- **Graceful Shutdown** — When the application exits, all running servers are shut down gracefully
+- **Localization** — Available in German and English (auto-detected from system language)
 
 ---
 
 ## 🖼️ Screenshots
 
-*Die Anwendung nutzt ein modernes Dark-Theme im Catppuccin-Stil mit Cards für jede Datenbank-Engine.*
+*The application uses a modern dark theme in Catppuccin style with cards for each database engine.*
 
 ---
 
-## 🛠️ Voraussetzungen
+## 🛠️ Prerequisites
 
 - **Windows 10/11** (x64)
-- [**.NET 10.0 Runtime**](https://dotnet.microsoft.com/download/dotnet/10.0) (oder SDK zum Selbstbauen)
+- [**.NET 10.0 Runtime**](https://dotnet.microsoft.com/download/dotnet/10.0) (or SDK for building from source)
 
-> ℹ️ Es werden keine Administratorrechte benötigt. Alle Datenbank-Dateien werden unter `%LOCALAPPDATA%\DatabaseStarter` abgelegt.
+> ℹ️ No administrator privileges are required. All database files are stored under `%LOCALAPPDATA%\DatabaseStarter`.
 
 ---
 
-## 🚀 Installation & Start
+## 🚀 Installation & Startup
 
-### Option 1: Release herunterladen
+### Option 1: Download Release
 
-1. Lade das neueste Release von der [Releases-Seite](../../releases) herunter
-2. Entpacke das Archiv in ein beliebiges Verzeichnis
-3. Starte `DatabaseStarter.exe`
+1. Download the latest release from the [Releases page](../../releases)
+2. Extract the archive to any directory
+3. Run `DatabaseStarter.exe`
 
-### Option 2: Selbst bauen
+### Option 2: Build from Source
 
 ```bash
-# Repository klonen
+# Clone repository
 git clone https://github.com/<user>/DatabaseStarter.git
 cd DatabaseStarter
 
-# Bauen
+# Build
 dotnet build -c Release
 
-# Starten
+# Run
 dotnet run --project DatabaseStarter
 ```
 
 ---
 
-## 📖 Verwendung
+## 📖 Usage
 
-1. **Version wählen** — Wähle im Dropdown die gewünschte Datenbank-Version aus
-2. **Installieren** — Klicke auf `📥 Installieren`, um die portable Distribution herunterzuladen und einzurichten
-3. **Starten** — Nach der Installation kann der Server mit `▶ Starten` gestartet werden
-4. **Verbinden** — Verbinde dich mit deinem bevorzugten Client auf `localhost` und dem angezeigten Port
-5. **Stoppen** — Beende den Server mit `⏹ Stoppen`
-6. **Deinstallieren** — Entferne die Instanz mit `🗑 Deinstallieren` (nur möglich, wenn der Server gestoppt ist)
+1. **Select Version** — Choose the desired database version from the dropdown
+2. **Install** — Click `📥 Install` to download and set up the portable distribution
+3. **Start** — After installation, the server can be started with `▶ Start`
+4. **Connect** — Connect with your preferred client to `localhost` and the displayed port
+5. **Stop** — Stop the server with `⏹ Stop`
+6. **Uninstall** — Remove the instance with `🗑 Uninstall` (only possible when the server is stopped)
 
 ---
 
-## 📁 Projektstruktur
+## 📁 Project Structure
 
 ```
 DatabaseStarter/
-├── DatabaseStarter.sln              # Solution-Datei
-└── DatabaseStarter/                 # WPF-Hauptprojekt
+├── DatabaseStarter.sln              # Solution file
+└── DatabaseStarter/                 # WPF main project
     ├── App.xaml(.cs)                # Application Entry Point
-    ├── MainWindow.xaml(.cs)         # Hauptfenster (UI)
+    ├── MainWindow.xaml(.cs)         # Main window (UI)
     ├── Converters/
-    │   └── Converters.cs            # WPF Value Converters (Status → Farbe, etc.)
+    │   └── Converters.cs            # WPF Value Converters (Status → Color, etc.)
     ├── Models/
-    │   ├── AppSettings.cs           # Persistierte Anwendungseinstellungen
-    │   ├── DatabaseDefaults.cs      # Standard-Versionen, Ports & Download-URLs
+    │   ├── AppSettings.cs           # Persisted application settings
+    │   ├── DatabaseDefaults.cs      # Default versions, ports & download URLs
     │   ├── DatabaseEngine.cs        # Enum: MySQL, MariaDB, PostgreSQL
-    │   ├── DatabaseInstanceInfo.cs  # Instanz-Konfiguration (Pfad, Port, Version, …)
+    │   ├── DatabaseInstanceInfo.cs  # Instance configuration (path, port, version, …)
     │   ├── DatabaseStatus.cs        # Enum: NotInstalled, Installing, Installed, Running
-    │   └── DatabaseVersionInfo.cs   # Versionsinformationen inkl. Download-URL
+    │   └── DatabaseVersionInfo.cs   # Version information incl. download URL
+    ├── Resources/
+    │   ├── Strings.resx             # Localized strings (German, default)
+    │   ├── Strings.en.resx          # Localized strings (English)
+    │   └── Strings.Designer.cs      # Auto-generated resource accessor
     ├── Services/
-    │   ├── IDatabaseEngineService.cs    # Interface für Engine-spezifische Operationen
-    │   ├── MySqlEngineService.cs        # MySQL-Implementierung
-    │   ├── MariaDbEngineService.cs      # MariaDB-Implementierung
-    │   ├── PostgreSqlEngineService.cs   # PostgreSQL-Implementierung
-    │   ├── DownloadService.cs           # HTTP-Download mit Fortschrittsanzeige
-    │   ├── ProcessService.cs            # Prozess-Management (Start/Stop)
-    │   └── SettingsService.cs           # JSON-basierte Einstellungsverwaltung
+    │   ├── IDatabaseEngineService.cs    # Interface for engine-specific operations
+    │   ├── MySqlEngineService.cs        # MySQL implementation
+    │   ├── MariaDbEngineService.cs      # MariaDB implementation
+    │   ├── PostgreSqlEngineService.cs   # PostgreSQL implementation
+    │   ├── DownloadService.cs           # HTTP download with progress reporting
+    │   ├── ProcessService.cs            # Process management (start/stop)
+    │   └── SettingsService.cs           # JSON-based settings management
     └── ViewModels/
-        ├── MainViewModel.cs         # Hauptfenster ViewModel
-        ├── DatabaseViewModel.cs     # ViewModel je Datenbank-Card
-        ├── ViewModelBase.cs         # INotifyPropertyChanged-Basisklasse
-        └── RelayCommand.cs          # ICommand-Implementierung
+        ├── MainViewModel.cs         # Main window ViewModel
+        ├── DatabaseViewModel.cs     # ViewModel per database card
+        ├── ViewModelBase.cs         # INotifyPropertyChanged base class
+        └── RelayCommand.cs          # ICommand implementation
 ```
 
 ---
 
-## ⚙️ Konfiguration
+## ⚙️ Configuration
 
-Die Einstellungen werden automatisch in `settings.json` neben der Anwendung gespeichert:
+Settings are automatically saved in `settings.json` next to the application:
 
 ```json
 {
@@ -141,48 +146,48 @@ Die Einstellungen werden automatisch in `settings.json` neben der Anwendung gesp
 }
 ```
 
-| Feld           | Beschreibung                                      |
-|----------------|---------------------------------------------------|
-| `BasePath`     | Basisverzeichnis für alle Datenbank-Installationen |
-| `Engine`       | 0 = MySQL, 1 = MariaDB, 2 = PostgreSQL            |
-| `Version`      | Gewählte Version der Engine                        |
-| `InstallPath`  | Installationsverzeichnis der portablen Binaries    |
-| `DataDir`      | Datenverzeichnis der Datenbank                     |
-| `Port`         | TCP-Port, auf dem der Server lauscht               |
+| Field          | Description                                      |
+|----------------|--------------------------------------------------|
+| `BasePath`     | Base directory for all database installations    |
+| `Engine`       | 0 = MySQL, 1 = MariaDB, 2 = PostgreSQL          |
+| `Version`      | Selected version of the engine                   |
+| `InstallPath`  | Installation directory of the portable binaries  |
+| `DataDir`      | Data directory of the database                   |
+| `Port`         | TCP port the server listens on                   |
 
 ---
 
-## 🏗️ Technologie-Stack
+## 🏗️ Technology Stack
 
-- **UI-Framework:** WPF (.NET 10.0)
-- **Architektur:** MVVM (Model-View-ViewModel)
-- **Sprache:** C# 13
-- **Persistierung:** System.Text.Json
+- **UI Framework:** WPF (.NET 10.0)
+- **Architecture:** MVVM (Model-View-ViewModel)
+- **Language:** C# 13
+- **Persistence:** System.Text.Json
+- **Localization:** .resx resource files (German & English)
 - **Design:** Catppuccin Mocha Dark Theme
 
 ---
 
-## 🤝 Mitwirken
+## 🤝 Contributing
 
-Beiträge sind willkommen! So geht's:
+Contributions are welcome! Here's how:
 
-1. Forke das Repository
-2. Erstelle einen Feature-Branch (`git checkout -b feature/mein-feature`)
-3. Committe deine Änderungen (`git commit -m 'Feature: Beschreibung'`)
-4. Pushe den Branch (`git push origin feature/mein-feature`)
-5. Erstelle einen Pull Request
-
----
-
-## 📄 Lizenz
-
-Dieses Projekt steht unter der [MIT-Lizenz](LICENSE).
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -m 'Feature: Description'`)
+4. Push the branch (`git push origin feature/my-feature`)
+5. Create a Pull Request
 
 ---
 
-## ⚠️ Hinweise
+## 📄 License
 
-- Die heruntergeladenen Datenbank-Binaries unterliegen den jeweiligen Lizenzen der Hersteller (Oracle/MySQL, MariaDB Foundation, PostgreSQL Global Development Group).
-- Dieses Tool ist für **Entwicklungs- und Testzwecke** gedacht — nicht für den Produktiveinsatz.
-- Die Datenbank-Prozesse laufen als lokale Benutzerprozesse, nicht als Windows-Dienste.
+This project is licensed under the [MIT License](LICENSE).
 
+---
+
+## ⚠️ Notes
+
+- The downloaded database binaries are subject to the respective licenses of the vendors (Oracle/MySQL, MariaDB Foundation, PostgreSQL Global Development Group).
+- This tool is intended for **development and testing purposes** — not for production use.
+- The database processes run as local user processes, not as Windows services.

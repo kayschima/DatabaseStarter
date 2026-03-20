@@ -1,6 +1,7 @@
 using System.IO;
 using System.IO.Compression;
 using DatabaseStarter.Models;
+using DatabaseStarter.Resources;
 
 namespace DatabaseStarter.Services;
 
@@ -55,7 +56,7 @@ public class PostgreSqlEngineService : IDatabaseEngineService
         var initdb = Path.Combine(info.InstallPath, "bin", "initdb.exe");
 
         if (!File.Exists(initdb) && !File.Exists(pgCtl))
-            throw new FileNotFoundException("initdb.exe / pg_ctl.exe nicht gefunden.");
+            throw new FileNotFoundException(Strings.ErrorInitdbPgctlNotFound);
 
         Directory.CreateDirectory(info.DataDir);
 
@@ -69,7 +70,7 @@ public class PostgreSqlEngineService : IDatabaseEngineService
 
         if (result.ExitCode != 0)
             throw new InvalidOperationException(
-                $"PostgreSQL-Initialisierung fehlgeschlagen (Exit {result.ExitCode}):\n{result.Error}\n{result.Output}");
+                string.Format(Strings.ErrorPostgresInitFailed, result.ExitCode, result.Error, result.Output));
 
         info.IsInitialized = true;
     }
@@ -78,7 +79,7 @@ public class PostgreSqlEngineService : IDatabaseEngineService
     {
         var pgCtl = Path.Combine(info.InstallPath, "bin", "pg_ctl.exe");
         if (!File.Exists(pgCtl))
-            throw new FileNotFoundException("pg_ctl.exe nicht gefunden.", pgCtl);
+            throw new FileNotFoundException(Strings.ErrorPgCtlNotFound, pgCtl);
 
         // pg_ctl start forks a child postgres process. We must NOT redirect
         // stdout/stderr because the child inherits the pipe handles, which
@@ -90,7 +91,7 @@ public class PostgreSqlEngineService : IDatabaseEngineService
 
         if (exitCode != 0)
             throw new InvalidOperationException(
-                $"PostgreSQL-Start fehlgeschlagen (Exit {exitCode})");
+                string.Format(Strings.ErrorPostgresStartFailed, exitCode));
 
         // Find the postgres process - pg_ctl starts it as a child
         // Read the PID from the postmaster.pid file

@@ -17,6 +17,7 @@ public partial class MainWindow : Window
         _viewModel = new MainViewModel();
         DataContext = _viewModel;
         Closing += MainWindow_Closing;
+        _viewModel.LanguageChanged += OnLanguageChanged;
     }
 
     private async void MainWindow_Closing(object? sender, CancelEventArgs e)
@@ -29,5 +30,26 @@ public partial class MainWindow : Window
     {
         var aboutWindow = new AboutWindow { Owner = this };
         aboutWindow.ShowDialog();
+    }
+
+    private void OnLanguageChanged(object? sender, EventArgs e)
+    {
+        // Recreate the window so all x:Static bindings are re-evaluated
+        var newWindow = new MainWindow
+        {
+            Left = Left,
+            Top = Top,
+            Width = Width,
+            Height = Height,
+            WindowState = WindowState
+        };
+
+        // Detach events so the old window doesn't stop databases on close
+        _viewModel.LanguageChanged -= OnLanguageChanged;
+        Closing -= MainWindow_Closing;
+
+        Application.Current.MainWindow = newWindow;
+        newWindow.Show();
+        Close();
     }
 }

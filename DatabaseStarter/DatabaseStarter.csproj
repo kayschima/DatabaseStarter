@@ -7,12 +7,23 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>DatabaseStarter.ico</ApplicationIcon>
-        <Version>0.0.1</Version>
+        <Version>0.1.0</Version>
+        <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
     <ItemGroup>
         <Resource Include="DatabaseStarter.jpg"/>
         <Resource Include="DatabaseStarter.ico"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Strings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Strings.de.resx">
+            <DependentUpon>Strings.resx</DependentUpon>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

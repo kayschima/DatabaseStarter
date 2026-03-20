@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:DatabaseStarter.Converters"
         xmlns:vm="clr-namespace:DatabaseStarter.ViewModels"
+        xmlns:res="clr-namespace:DatabaseStarter.Resources"
         mc:Ignorable="d"
-        Title="Database Starter – Portable DB Manager"
+        Title="{x:Static res:Strings.WindowTitle}"
         Icon="DatabaseStarter.ico"
-        Height="800" Width="900"
-        MinHeight="600" MinWidth="700"
+        Height="850" Width="700"
+        MinHeight="850" MinWidth="700"
         WindowStartupLocation="CenterScreen"
         Background="#FF1E1E2E">
 
@@ -331,8 +332,8 @@
                 <!-- Info Button (right-aligned) -->
                 <Button DockPanel.Dock="Right" Click="InfoButton_Click"
                         VerticalAlignment="Center" Cursor="Hand"
-                        Width="30" Height="30" Margin="12,0,0,0"
-                        ToolTip="Über Database Starter">
+                        Width="30" Height="30" Margin="8,0,0,0"
+                        ToolTip="{x:Static res:Strings.InfoButtonTooltip}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="infoBorder"
@@ -354,17 +355,98 @@
                     </Button.Template>
                 </Button>
 
+                <!-- Language Toggle Button (right-aligned) -->
+                <Button DockPanel.Dock="Right"
+                        Command="{Binding ToggleLanguageCommand}"
+                        VerticalAlignment="Center" Cursor="Hand"
+                        Margin="8,0,0,0"
+                        ToolTip="Deutsch / English">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="langBorder"
+                                    Background="#FF313244" CornerRadius="8"
+                                    Padding="6,4">
+                                <Grid>
+                                    <!-- German flag (black-red-gold) -->
+                                    <Border x:Name="FlagDE" Width="28" Height="20"
+                                            CornerRadius="2" ClipToBounds="True"
+                                            Visibility="Collapsed">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Rectangle Grid.Row="0" Fill="#FF000000" />
+                                            <Rectangle Grid.Row="1" Fill="#FFDD0000" />
+                                            <Rectangle Grid.Row="2" Fill="#FFFFCC00" />
+                                        </Grid>
+                                    </Border>
+                                    <!-- UK flag (Union Jack) -->
+                                    <Border x:Name="FlagGB" Width="28" Height="20"
+                                            CornerRadius="2" ClipToBounds="True"
+                                            Visibility="Collapsed">
+                                        <Canvas Width="28" Height="20">
+                                            <!-- Blue background -->
+                                            <Rectangle Canvas.Left="0" Canvas.Top="0"
+                                                       Width="28" Height="20" Fill="#FF012169" />
+                                            <!-- White diagonal stripes -->
+                                            <Line X1="0" Y1="0" X2="28" Y2="20"
+                                                  Stroke="White" StrokeThickness="4" />
+                                            <Line X1="28" Y1="0" X2="0" Y2="20"
+                                                  Stroke="White" StrokeThickness="4" />
+                                            <!-- Red diagonal stripes -->
+                                            <Line X1="0" Y1="0" X2="28" Y2="20"
+                                                  Stroke="#FFC8102E" StrokeThickness="1.6" />
+                                            <Line X1="28" Y1="0" X2="0" Y2="20"
+                                                  Stroke="#FFC8102E" StrokeThickness="1.6" />
+                                            <!-- White cross -->
+                                            <Rectangle Canvas.Left="0" Canvas.Top="8"
+                                                       Width="28" Height="4" Fill="White" />
+                                            <Rectangle Canvas.Left="12" Canvas.Top="0"
+                                                       Width="4" Height="20" Fill="White" />
+                                            <!-- Red cross -->
+                                            <Rectangle Canvas.Left="0" Canvas.Top="8.8"
+                                                       Width="28" Height="2.4" Fill="#FFC8102E" />
+                                            <Rectangle Canvas.Left="12.8" Canvas.Top="0"
+                                                       Width="2.4" Height="20" Fill="#FFC8102E" />
+                                        </Canvas>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsTargetLanguageGerman}" Value="True">
+                                    <Setter TargetName="FlagDE" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="FlagGB" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsTargetLanguageGerman}" Value="False">
+                                    <Setter TargetName="FlagGB" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="FlagDE" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="langBorder" Property="Background" Value="#FF45475A" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="langBorder" Property="Background" Value="#FF585B70" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Version (right-aligned, vertically centered with buttons) -->
+                <TextBlock DockPanel.Dock="Right"
+                           Text="{Binding AppVersion, StringFormat='v.{0}'}"
+                           FontSize="13" Foreground="#FF6C7086"
+                           VerticalAlignment="Center" Margin="8,0,0,0" />
+
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="Database Starter"
                                FontSize="24" FontWeight="Bold"
                                Foreground="#FFCDD6F4" />
-                    <DockPanel Margin="0,4,0,0">
-                        <TextBlock Text="Portable MySQL, MariaDB &amp; PostgreSQL Instanzen verwalten"
-                                   FontSize="13" Foreground="#FFA6ADC8" />
-                        <TextBlock Text="{Binding AppVersion, StringFormat='v.{0}'}"
-                                   FontSize="13" Foreground="#FF6C7086"
-                                   HorizontalAlignment="Right" Margin="12,0,0,0" />
-                    </DockPanel>
+                    <TextBlock Text="{x:Static res:Strings.Subtitle}"
+                               FontSize="13" Foreground="#FFA6ADC8"
+                               Margin="0,4,0,0" />
                 </StackPanel>
             </DockPanel>
         </Border>
@@ -411,6 +493,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
@@ -462,7 +545,7 @@
 
                                     <!-- Version -->
                                     <TextBlock Grid.Row="0" Grid.Column="0"
-                                               Text="Version" Foreground="#FF6C7086"
+                                               Text="{x:Static res:Strings.LabelVersion}" Foreground="#FF6C7086"
                                                FontSize="12" VerticalAlignment="Center"
                                                Margin="0,0,12,6" />
                                     <StackPanel Grid.Row="0" Grid.Column="1"
@@ -473,7 +556,8 @@
                                                   DisplayMemberPath="DisplayName"
                                                   MinWidth="160" Height="24" FontSize="11"
                                                   VerticalContentAlignment="Center" />
-                                        <TextBlock Text="(fixiert)" Foreground="#FF585B70"
+                                        <TextBlock Text="{x:Static res:Strings.LabelVersionLocked}"
+                                                   Foreground="#FF585B70"
                                                    FontSize="10" FontStyle="Italic"
                                                    VerticalAlignment="Center" Margin="8,0,0,0"
                                                    Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -481,7 +565,7 @@
 
                                     <!-- Port -->
                                     <TextBlock Grid.Row="1" Grid.Column="0"
-                                               Text="Port" Foreground="#FF6C7086"
+                                               Text="{x:Static res:Strings.LabelPort}" Foreground="#FF6C7086"
                                                FontSize="12" VerticalAlignment="Center"
                                                Margin="0,0,12,4" />
                                     <TextBlock Grid.Row="1" Grid.Column="1"
@@ -492,7 +576,7 @@
 
                                     <!-- Path + Progress -->
                                     <TextBlock Grid.Row="2" Grid.Column="0"
-                                               Text="Pfad" Foreground="#FF6C7086"
+                                               Text="{x:Static res:Strings.LabelPath}" Foreground="#FF6C7086"
                                                FontSize="12" VerticalAlignment="Center"
                                                Margin="0,0,12,0" />
                                     <DockPanel Grid.Row="2" Grid.Column="1">
@@ -522,38 +606,35 @@
                                 <Rectangle Grid.Row="3" Height="1" Margin="0,8"
                                            Fill="#20FFFFFF" />
 
-                                <!-- Row 4: Action buttons + Log expander -->
-                                <DockPanel Grid.Row="4">
-                                    <!-- Log expander (right) -->
-                                    <Expander DockPanel.Dock="Right" Header="Log"
-                                              Foreground="#FF6C7086" FontSize="11"
-                                              IsExpanded="False" VerticalAlignment="Center"
-                                              Margin="8,0,0,0">
-                                        <TextBox Text="{Binding LogOutput, Mode=OneWay}"
-                                                 IsReadOnly="True" TextWrapping="Wrap"
-                                                 MaxHeight="80" MaxWidth="300"
-                                                 VerticalScrollBarVisibility="Auto"
-                                                 Background="#FF181825" Foreground="#FFA6ADC8"
-                                                 BorderThickness="0" FontFamily="Consolas"
-                                                 FontSize="10" Padding="6" Margin="0,4,0,0" />
-                                    </Expander>
+                                <!-- Row 4: Action buttons -->
+                                <StackPanel Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="{x:Static res:Strings.ButtonInstall}"
+                                            Style="{StaticResource InstallButton}"
+                                            Command="{Binding InstallCommand}" />
+                                    <Button Content="{x:Static res:Strings.ButtonStart}"
+                                            Style="{StaticResource StartButton}"
+                                            Command="{Binding StartCommand}" />
+                                    <Button Content="{x:Static res:Strings.ButtonStop}"
+                                            Style="{StaticResource StopButton}"
+                                            Command="{Binding StopCommand}" />
+                                    <Button Content="{x:Static res:Strings.ButtonUninstall}"
+                                            Style="{StaticResource UninstallButton}"
+                                            Command="{Binding UninstallCommand}" />
+                                </StackPanel>
 
-                                    <!-- Action buttons -->
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Button Content="📥 Installieren"
-                                                Style="{StaticResource InstallButton}"
-                                                Command="{Binding InstallCommand}" />
-                                        <Button Content="▶ Starten"
-                                                Style="{StaticResource StartButton}"
-                                                Command="{Binding StartCommand}" />
-                                        <Button Content="⏹ Stoppen"
-                                                Style="{StaticResource StopButton}"
-                                                Command="{Binding StopCommand}" />
-                                        <Button Content="🗑 Deinstallieren"
-                                                Style="{StaticResource UninstallButton}"
-                                                Command="{Binding UninstallCommand}" />
-                                    </StackPanel>
-                                </DockPanel>
+                                <!-- Row 5: Log expander (below buttons) -->
+                                <Expander Grid.Row="5" Header="{x:Static res:Strings.ExpanderLog}"
+                                          Foreground="#FF6C7086" FontSize="11"
+                                          IsExpanded="False" Margin="0,4,0,0">
+                                    <TextBox Text="{Binding LogOutput, Mode=OneWay}"
+                                             IsReadOnly="True" TextWrapping="NoWrap"
+                                             Height="42"
+                                             VerticalScrollBarVisibility="Auto"
+                                             HorizontalScrollBarVisibility="Auto"
+                                             Background="#FF181825" Foreground="#FFA6ADC8"
+                                             BorderThickness="0" FontFamily="Consolas"
+                                             FontSize="10" Padding="6" Margin="0,4,0,0" />
+                                </Expander>
                             </Grid>
                         </Grid>
                     </Border>
