@@ -9,8 +9,8 @@
         mc:Ignorable="d"
         Title="{x:Static res:Strings.WindowTitle}"
         Icon="DatabaseStarter.ico"
-        Height="800" Width="900"
-        MinHeight="600" MinWidth="700"
+        Height="850" Width="700"
+        MinHeight="850" MinWidth="700"
         WindowStartupLocation="CenterScreen"
         Background="#FF1E1E2E">
 
@@ -495,6 +495,7 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <!-- Row 0: Header — Icon + Name + Status Badge -->
@@ -605,38 +606,35 @@
                                 <Rectangle Grid.Row="3" Height="1" Margin="0,8"
                                            Fill="#20FFFFFF" />
 
-                                <!-- Row 4: Action buttons + Log expander -->
-                                <DockPanel Grid.Row="4">
-                                    <!-- Log expander (right) -->
-                                    <Expander DockPanel.Dock="Right" Header="{x:Static res:Strings.ExpanderLog}"
-                                              Foreground="#FF6C7086" FontSize="11"
-                                              IsExpanded="False" VerticalAlignment="Center"
-                                              Margin="8,0,0,0">
-                                        <TextBox Text="{Binding LogOutput, Mode=OneWay}"
-                                                 IsReadOnly="True" TextWrapping="Wrap"
-                                                 MaxHeight="80" MaxWidth="300"
-                                                 VerticalScrollBarVisibility="Auto"
-                                                 Background="#FF181825" Foreground="#FFA6ADC8"
-                                                 BorderThickness="0" FontFamily="Consolas"
-                                                 FontSize="10" Padding="6" Margin="0,4,0,0" />
-                                    </Expander>
+                                <!-- Row 4: Action buttons -->
+                                <StackPanel Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="{x:Static res:Strings.ButtonInstall}"
+                                            Style="{StaticResource InstallButton}"
+                                            Command="{Binding InstallCommand}" />
+                                    <Button Content="{x:Static res:Strings.ButtonStart}"
+                                            Style="{StaticResource StartButton}"
+                                            Command="{Binding StartCommand}" />
+                                    <Button Content="{x:Static res:Strings.ButtonStop}"
+                                            Style="{StaticResource StopButton}"
+                                            Command="{Binding StopCommand}" />
+                                    <Button Content="{x:Static res:Strings.ButtonUninstall}"
+                                            Style="{StaticResource UninstallButton}"
+                                            Command="{Binding UninstallCommand}" />
+                                </StackPanel>
 
-                                    <!-- Action buttons -->
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Button Content="{x:Static res:Strings.ButtonInstall}"
-                                                Style="{StaticResource InstallButton}"
-                                                Command="{Binding InstallCommand}" />
-                                        <Button Content="{x:Static res:Strings.ButtonStart}"
-                                                Style="{StaticResource StartButton}"
-                                                Command="{Binding StartCommand}" />
-                                        <Button Content="{x:Static res:Strings.ButtonStop}"
-                                                Style="{StaticResource StopButton}"
-                                                Command="{Binding StopCommand}" />
-                                        <Button Content="{x:Static res:Strings.ButtonUninstall}"
-                                                Style="{StaticResource UninstallButton}"
-                                                Command="{Binding UninstallCommand}" />
-                                    </StackPanel>
-                                </DockPanel>
+                                <!-- Row 5: Log expander (below buttons) -->
+                                <Expander Grid.Row="5" Header="{x:Static res:Strings.ExpanderLog}"
+                                          Foreground="#FF6C7086" FontSize="11"
+                                          IsExpanded="False" Margin="0,4,0,0">
+                                    <TextBox Text="{Binding LogOutput, Mode=OneWay}"
+                                             IsReadOnly="True" TextWrapping="NoWrap"
+                                             Height="42"
+                                             VerticalScrollBarVisibility="Auto"
+                                             HorizontalScrollBarVisibility="Auto"
+                                             Background="#FF181825" Foreground="#FFA6ADC8"
+                                             BorderThickness="0" FontFamily="Consolas"
+                                             FontSize="10" Padding="6" Margin="0,4,0,0" />
+                                </Expander>
                             </Grid>
                         </Grid>
                     </Border>
