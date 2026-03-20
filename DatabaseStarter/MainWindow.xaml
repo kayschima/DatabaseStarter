@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="Database Starter – Portable DB Manager"
         Icon="DatabaseStarter.ico"
-        Height="700" Width="900"
-        MinHeight="500" MinWidth="700"
+        Height="800" Width="900"
+        MinHeight="600" MinWidth="700"
         WindowStartupLocation="CenterScreen"
         Background="#FF1E1E2E">
 
