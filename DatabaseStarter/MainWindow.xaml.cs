@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using DatabaseStarter.ViewModels;
 
 namespace DatabaseStarter;
@@ -18,9 +19,15 @@ public partial class MainWindow : Window
         Closing += MainWindow_Closing;
     }
 
-    private async void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+    private async void MainWindow_Closing(object? sender, CancelEventArgs e)
     {
         // Stop all running databases on exit
         await _viewModel.StopAllAsync();
+    }
+
+    private void InfoButton_Click(object sender, RoutedEventArgs e)
+    {
+        var aboutWindow = new AboutWindow { Owner = this };
+        aboutWindow.ShowDialog();
     }
 }

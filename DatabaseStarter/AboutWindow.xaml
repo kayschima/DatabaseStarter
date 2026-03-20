@@ -1,0 +1,92 @@
+<Window x:Class="DatabaseStarter.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Über Database Starter"
+        Width="480" Height="400"
+        MinWidth="400" MinHeight="350"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#FF1E1E2E">
+
+    <Grid Margin="32,24,32,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header: Logo + Name + Version + Link -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center">
+            <Image Source="DatabaseStarter.jpg"
+                   Width="72" Height="72"
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   HorizontalAlignment="Center" Margin="0,0,0,12" />
+            <TextBlock Text="Database Starter"
+                       FontSize="22" FontWeight="Bold"
+                       Foreground="#FFCDD6F4"
+                       HorizontalAlignment="Center" />
+            <TextBlock x:Name="VersionText"
+                       FontSize="14" Foreground="#FFA6ADC8"
+                       HorizontalAlignment="Center" Margin="0,4,0,8" />
+            <TextBlock HorizontalAlignment="Center" Margin="0,0,0,16">
+                <Hyperlink x:Name="RepoLink"
+                           NavigateUri="https://github.com/kayschima/DatabaseStarter"
+                           RequestNavigate="Hyperlink_RequestNavigate"
+                           Foreground="#FF89B4FA"
+                           TextDecorations="None">
+                    https://github.com/kayschima/DatabaseStarter
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- Info Text -->
+        <Border Grid.Row="1" Background="#FF181825" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBlock Foreground="#FFBAC2DE" FontSize="13" TextWrapping="Wrap" LineHeight="20">
+                    Database Starter ist eine portable Desktop-Anwendung zur Verwaltung lokaler Datenbank-Server
+                    auf Windows. Die Anwendung ermöglicht es, MySQL, MariaDB und PostgreSQL als portable Instanzen
+                    herunterzuladen, zu installieren, zu starten und zu stoppen — ganz ohne Administratorrechte
+                    und ohne Windows-Dienste.
+
+                    Alle Datenbank-Dateien werden im lokalen Benutzerverzeichnis abgelegt und können jederzeit
+                    vollständig entfernt werden. Die Konfiguration wird automatisch in einer JSON-Datei
+                    persistiert.
+
+                    Das Programm richtet sich an Entwickler, die schnell und unkompliziert lokale
+                    Datenbank-Instanzen für Entwicklung und Tests benötigen.
+
+                    Erstellt mit WPF und .NET 10.0.
+                </TextBlock>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Close Button -->
+        <Button Grid.Row="2"
+                Content="Schließen"
+                Click="CloseButton_Click"
+                HorizontalAlignment="Center"
+                MinWidth="120" Height="34"
+                FontSize="13" FontWeight="SemiBold"
+                Foreground="White" Background="#FF89B4FA"
+                Cursor="Hand" BorderThickness="0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="btnBorder"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            Padding="20,6">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="btnBorder" Property="Background" Value="#FF7AA2F7" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="btnBorder" Property="Background" Value="#FF6A92E7" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Window>

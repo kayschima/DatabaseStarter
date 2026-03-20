@@ -327,6 +327,33 @@
                        Width="48" Height="48" Margin="0,0,16,0"
                        VerticalAlignment="Center"
                        RenderOptions.BitmapScalingMode="HighQuality" />
+
+                <!-- Info Button (right-aligned) -->
+                <Button DockPanel.Dock="Right" Click="InfoButton_Click"
+                        VerticalAlignment="Center" Cursor="Hand"
+                        Width="30" Height="30" Margin="12,0,0,0"
+                        ToolTip="Über Database Starter">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="infoBorder"
+                                    Background="#FF313244" CornerRadius="15"
+                                    Width="30" Height="30">
+                                <TextBlock Text="i" FontSize="16" FontWeight="Bold"
+                                           FontStyle="Italic" Foreground="#FF89B4FA"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="infoBorder" Property="Background" Value="#FF45475A" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="infoBorder" Property="Background" Value="#FF585B70" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="Database Starter"
                                FontSize="24" FontWeight="Bold"
@@ -334,7 +361,7 @@
                     <DockPanel Margin="0,4,0,0">
                         <TextBlock Text="Portable MySQL, MariaDB &amp; PostgreSQL Instanzen verwalten"
                                    FontSize="13" Foreground="#FFA6ADC8" />
-                        <TextBlock Text="{Binding AppVersion, StringFormat='v{0}'}"
+                        <TextBlock Text="{Binding AppVersion, StringFormat='v.{0}'}"
                                    FontSize="13" Foreground="#FF6C7086"
                                    HorizontalAlignment="Right" Margin="12,0,0,0" />
                     </DockPanel>

@@ -15,11 +15,11 @@
 
 Die Anwendung verwaltet eigenständige, portable Instanzen der folgenden Datenbank-Engines:
 
-| Engine       | Unterstützte Versionen        | Standard-Port |
-|--------------|-------------------------------|---------------|
-| 🐬 MySQL     | 8.4.7, 8.0.44                | 3306          |
-| 🦭 MariaDB   | 11.8.6, 11.4.10, 10.11.16   | 3307          |
-| 🐘 PostgreSQL | 18.3, 17.9, 16.13, 16.3, 15.17 | 5432          |
+| Engine       | Unterstützte Versionen            | Standard-Port |
+|--------------|-----------------------------------|---------------|
+| 🐬 MySQL     | 9.5.0, 8.4.7, 8.0.44              | 3306          |
+| 🦭 MariaDB   | 12.2.2, 11.8.6, 11.4.10, 10.11.16 | 3307          |
+| 🐘 PostgreSQL | 18.3, 17.9, 16.13, 16.3, 15.17    | 5432          |
 
 ---
 

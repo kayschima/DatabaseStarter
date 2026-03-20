@@ -12,6 +12,11 @@ public static class DatabaseDefaults
     {
         new()
         {
+            Version = "9.5.0", DisplayName = "MySQL 9.5.0",
+            DownloadUrl = "https://cdn.mysql.com/archives/mysql-9.5/mysql-9.5.0-winx64.zip", ExtractFolder = "mysql"
+        },
+        new()
+        {
             Version = "8.4.7", DisplayName = "MySQL 8.4.7",
             DownloadUrl = "https://cdn.mysql.com/archives/mysql-8.4/mysql-8.4.7-winx64.zip", ExtractFolder = "mysql"
         },
@@ -24,6 +29,12 @@ public static class DatabaseDefaults
 
     public static readonly IReadOnlyList<DatabaseVersionInfo> MariaDbVersions = new List<DatabaseVersionInfo>
     {
+        new()
+        {
+            Version = "12.2.2", DisplayName = "MariaDB 12.2.2",
+            DownloadUrl = "https://archive.mariadb.org/mariadb-12.2.2/winx64-packages/mariadb-12.2.2-winx64.zip",
+            ExtractFolder = "mariadb"
+        },
         new()
         {
             Version = "11.8.6", DisplayName = "MariaDB 11.8.6",
