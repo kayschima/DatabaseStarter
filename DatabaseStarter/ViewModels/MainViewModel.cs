@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Reflection;
 using DatabaseStarter.Models;
 using DatabaseStarter.Services;
 
@@ -6,8 +7,8 @@ namespace DatabaseStarter.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private readonly SettingsService _settingsService;
     private readonly AppSettings _appSettings;
+    private readonly SettingsService _settingsService;
 
     public MainViewModel()
     {
@@ -37,6 +38,22 @@ public class MainViewModel : ViewModelBase
 
     public string Title => "Database Starter – Portable DB Manager";
 
+    public string AppVersion
+    {
+        get
+        {
+            var version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                              ?.InformationalVersion
+                          ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString()
+                          ?? "0.0.1";
+            // Strip build metadata (e.g. "+sha..." suffix added by SDK)
+            var plusIndex = version.IndexOf('+');
+            if (plusIndex >= 0)
+                version = version[..plusIndex];
+            return version;
+        }
+    }
+
     /// <summary>
     /// Stop all running databases (called on application exit).
     /// </summary>
@@ -60,4 +77,3 @@ public class MainViewModel : ViewModelBase
         }
     }
 }
-

@@ -331,8 +331,13 @@
                     <TextBlock Text="Database Starter"
                                FontSize="24" FontWeight="Bold"
                                Foreground="#FFCDD6F4" />
-                    <TextBlock Text="Portable MySQL, MariaDB &amp; PostgreSQL Instanzen verwalten"
-                               FontSize="13" Foreground="#FFA6ADC8" Margin="0,4,0,0" />
+                    <DockPanel Margin="0,4,0,0">
+                        <TextBlock Text="Portable MySQL, MariaDB &amp; PostgreSQL Instanzen verwalten"
+                                   FontSize="13" Foreground="#FFA6ADC8" />
+                        <TextBlock Text="{Binding AppVersion, StringFormat='v{0}'}"
+                                   FontSize="13" Foreground="#FF6C7086"
+                                   HorizontalAlignment="Right" Margin="12,0,0,0" />
+                    </DockPanel>
                 </StackPanel>
             </DockPanel>
         </Border>
