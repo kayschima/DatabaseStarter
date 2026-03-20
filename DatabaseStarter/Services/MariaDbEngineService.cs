@@ -1,6 +1,7 @@
 using System.IO;
 using System.IO.Compression;
 using DatabaseStarter.Models;
+using DatabaseStarter.Resources;
 
 namespace DatabaseStarter.Services;
 
@@ -49,54 +50,6 @@ public class MariaDbEngineService : IDatabaseEngineService
         }
     }
 
-    /// <summary>
-    /// Finds the extracted subfolder inside <paramref name="installPath"/>.
-    /// First tries the explicit <paramref name="expectedFolder"/>, then scans for any
-    /// directory starting with "mariadb-" that contains a "bin" folder.
-    /// </summary>
-    private static string? FindExtractedSubFolder(string installPath, string expectedFolder)
-    {
-        // 1. Try the explicitly configured folder name
-        var explicit1 = Path.Combine(installPath, expectedFolder);
-        if (Directory.Exists(explicit1))
-            return explicit1;
-
-        // 2. Scan for any mariadb-* subfolder that looks like an extracted archive
-        var candidates = Directory.GetDirectories(installPath, "mariadb-*");
-        foreach (var candidate in candidates)
-        {
-            if (Directory.Exists(Path.Combine(candidate, "bin")))
-                return candidate;
-        }
-
-        // 3. If there's exactly one subfolder (and no bin/ at top level yet), use it
-        var allDirs = Directory.GetDirectories(installPath);
-        if (allDirs.Length == 1 && !Directory.Exists(Path.Combine(installPath, "bin")))
-            return allDirs[0];
-
-        return null;
-    }
-
-    /// <summary>
-    /// Moves all files and directories from <paramref name="source"/> into <paramref name="target"/>.
-    /// </summary>
-    private static void MoveContentsUp(string source, string target)
-    {
-        foreach (var dir in Directory.GetDirectories(source))
-        {
-            var dest = Path.Combine(target, Path.GetFileName(dir));
-            if (Directory.Exists(dest)) Directory.Delete(dest, true);
-            Directory.Move(dir, dest);
-        }
-
-        foreach (var file in Directory.GetFiles(source))
-        {
-            var dest = Path.Combine(target, Path.GetFileName(file));
-            if (File.Exists(dest)) File.Delete(dest);
-            File.Move(file, dest);
-        }
-    }
-
     public async Task InitializeAsync(DatabaseInstanceInfo info)
     {
         // MariaDB uses mysql_install_db.exe for initialization
@@ -108,7 +61,7 @@ public class MariaDbEngineService : IDatabaseEngineService
         }
 
         if (!File.Exists(installDb))
-            throw new FileNotFoundException("mysql_install_db.exe nicht gefunden.", installDb);
+            throw new FileNotFoundException(Strings.ErrorInstallDbNotFound, installDb);
 
         Directory.CreateDirectory(info.DataDir);
 
@@ -119,7 +72,7 @@ public class MariaDbEngineService : IDatabaseEngineService
 
         if (result.ExitCode != 0)
             throw new InvalidOperationException(
-                $"MariaDB-Initialisierung fehlgeschlagen (Exit {result.ExitCode}):\n{result.Error}\n{result.Output}");
+                string.Format(Strings.ErrorMariaDbInitFailed, result.ExitCode, result.Error, result.Output));
 
         info.IsInitialized = true;
     }
@@ -133,7 +86,7 @@ public class MariaDbEngineService : IDatabaseEngineService
         }
 
         if (!File.Exists(mysqld))
-            throw new FileNotFoundException("mysqld.exe / mariadbd.exe nicht gefunden.", mysqld);
+            throw new FileNotFoundException(Strings.ErrorMysqldMariadbdNotFound, mysqld);
 
         var process = _processService.StartProcess(
             mysqld,
@@ -205,5 +158,52 @@ public class MariaDbEngineService : IDatabaseEngineService
 
         return DatabaseStatus.Installed;
     }
-}
 
+    /// <summary>
+    /// Finds the extracted subfolder inside <paramref name="installPath"/>.
+    /// First tries the explicit <paramref name="expectedFolder"/>, then scans for any
+    /// directory starting with "mariadb-" that contains a "bin" folder.
+    /// </summary>
+    private static string? FindExtractedSubFolder(string installPath, string expectedFolder)
+    {
+        // 1. Try the explicitly configured folder name
+        var explicit1 = Path.Combine(installPath, expectedFolder);
+        if (Directory.Exists(explicit1))
+            return explicit1;
+
+        // 2. Scan for any mariadb-* subfolder that looks like an extracted archive
+        var candidates = Directory.GetDirectories(installPath, "mariadb-*");
+        foreach (var candidate in candidates)
+        {
+            if (Directory.Exists(Path.Combine(candidate, "bin")))
+                return candidate;
+        }
+
+        // 3. If there's exactly one subfolder (and no bin/ at top level yet), use it
+        var allDirs = Directory.GetDirectories(installPath);
+        if (allDirs.Length == 1 && !Directory.Exists(Path.Combine(installPath, "bin")))
+            return allDirs[0];
+
+        return null;
+    }
+
+    /// <summary>
+    /// Moves all files and directories from <paramref name="source"/> into <paramref name="target"/>.
+    /// </summary>
+    private static void MoveContentsUp(string source, string target)
+    {
+        foreach (var dir in Directory.GetDirectories(source))
+        {
+            var dest = Path.Combine(target, Path.GetFileName(dir));
+            if (Directory.Exists(dest)) Directory.Delete(dest, true);
+            Directory.Move(dir, dest);
+        }
+
+        foreach (var file in Directory.GetFiles(source))
+        {
+            var dest = Path.Combine(target, Path.GetFileName(file));
+            if (File.Exists(dest)) File.Delete(dest);
+            File.Move(file, dest);
+        }
+    }
+}

@@ -1,6 +1,7 @@
 using System.IO;
 using System.IO.Compression;
 using DatabaseStarter.Models;
+using DatabaseStarter.Resources;
 
 namespace DatabaseStarter.Services;
 
@@ -55,7 +56,7 @@ public class MySqlEngineService : IDatabaseEngineService
     {
         var mysqld = Path.Combine(info.InstallPath, "bin", "mysqld.exe");
         if (!File.Exists(mysqld))
-            throw new FileNotFoundException("mysqld.exe nicht gefunden.", mysqld);
+            throw new FileNotFoundException(Strings.ErrorMysqldNotFound, mysqld);
 
         Directory.CreateDirectory(info.DataDir);
 
@@ -66,7 +67,7 @@ public class MySqlEngineService : IDatabaseEngineService
 
         if (result.ExitCode != 0)
             throw new InvalidOperationException(
-                $"MySQL-Initialisierung fehlgeschlagen (Exit {result.ExitCode}):\n{result.Error}");
+                string.Format(Strings.ErrorMysqlInitFailed, result.ExitCode, result.Error));
 
         info.IsInitialized = true;
     }
@@ -75,7 +76,7 @@ public class MySqlEngineService : IDatabaseEngineService
     {
         var mysqld = Path.Combine(info.InstallPath, "bin", "mysqld.exe");
         if (!File.Exists(mysqld))
-            throw new FileNotFoundException("mysqld.exe nicht gefunden.", mysqld);
+            throw new FileNotFoundException(Strings.ErrorMysqldNotFound, mysqld);
 
         var process = _processService.StartProcess(
             mysqld,

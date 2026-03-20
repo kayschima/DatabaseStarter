@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string"/>
+                            <xsd:attribute name="type" type="xsd:string"/>
+                            <xsd:attribute name="mimetype" type="xsd:string"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string"/>
+                            <xsd:attribute name="name" type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="WindowTitle" xml:space="preserve"><value>Database Starter – Portable DB Manager</value></data>
+    <data name="AboutWindowTitle" xml:space="preserve"><value>About Database Starter</value></data>
+    <data name="Subtitle" xml:space="preserve"><value>Manage portable MySQL, MariaDB &amp; PostgreSQL instances</value></data>
+    <data name="InfoButtonTooltip" xml:space="preserve"><value>About Database Starter</value></data>
+    <data name="LabelVersion" xml:space="preserve"><value>Version</value></data>
+    <data name="LabelVersionLocked" xml:space="preserve"><value>(locked)</value></data>
+    <data name="LabelPort" xml:space="preserve"><value>Port</value></data>
+    <data name="LabelPath" xml:space="preserve"><value>Path</value></data>
+    <data name="ExpanderLog" xml:space="preserve"><value>Log</value></data>
+    <data name="ButtonInstall" xml:space="preserve"><value>&#x1F4E5; Install</value></data>
+    <data name="ButtonStart" xml:space="preserve"><value>&#x25B6; Start</value></data>
+    <data name="ButtonStop" xml:space="preserve"><value>&#x23F9; Stop</value></data>
+    <data name="ButtonUninstall" xml:space="preserve"><value>&#x1F5D1; Uninstall</value></data>
+    <data name="ButtonClose" xml:space="preserve"><value>Close</value></data>
+    <data name="AboutDescription" xml:space="preserve"><value>Database Starter is a portable desktop application for managing local database servers on Windows. It allows you to download, install, start, and stop MySQL, MariaDB, and PostgreSQL as portable instances — without administrator privileges and without Windows services.
+All database files are stored in the local user directory and can be completely removed at any time. The configuration is automatically persisted in a JSON file.
+The application is aimed at developers who need quick and easy local database instances for development and testing.
+Built with WPF and .NET 10.0.</value></data>
+    <data name="StatusNotInstalled" xml:space="preserve"><value>Not installed</value></data>
+    <data name="StatusInstalling" xml:space="preserve"><value>Installing…</value></data>
+    <data name="StatusInstallingProgress" xml:space="preserve"><value>Installing… {0:F0} %</value></data>
+    <data name="StatusInstalled" xml:space="preserve"><value>Installed (stopped)</value></data>
+    <data name="StatusRunning" xml:space="preserve"><value>Running on port {0}</value></data>
+    <data name="StatusUnknown" xml:space="preserve"><value>Unknown</value></data>
+    <data name="MessageDownloading" xml:space="preserve"><value>Downloading...</value></data>
+    <data name="MessageDownloadingProgress" xml:space="preserve"><value>Downloading... {0:F1}%</value></data>
+    <data name="MessageExtracting" xml:space="preserve"><value>Extracting...</value></data>
+    <data name="MessageInitializing" xml:space="preserve"><value>Initializing...</value></data>
+    <data name="MessageInstallComplete" xml:space="preserve"><value>Installation complete!</value></data>
+    <data name="MessageStarting" xml:space="preserve"><value>Starting...</value></data>
+    <data name="MessageRunningPid" xml:space="preserve"><value>Running (PID: {0})</value></data>
+    <data name="MessageStopping" xml:space="preserve"><value>Stopping...</value></data>
+    <data name="MessageStopped" xml:space="preserve"><value>Stopped.</value></data>
+    <data name="MessageUninstalling" xml:space="preserve"><value>Uninstalling...</value></data>
+    <data name="MessageUninstalled" xml:space="preserve"><value>Uninstalled.</value></data>
+    <data name="LogInstallSuccess" xml:space="preserve"><value>[{0:HH:mm:ss}] {1} successfully installed.</value></data>
+    <data name="LogInstallError" xml:space="preserve"><value>[{0:HH:mm:ss}] ERROR during installation: {1}</value></data>
+    <data name="LogStartSuccess" xml:space="preserve"><value>[{0:HH:mm:ss}] {1} started (PID: {2}, Port: {3}).</value></data>
+    <data name="LogStartError" xml:space="preserve"><value>[{0:HH:mm:ss}] ERROR during start: {1}</value></data>
+    <data name="LogStopSuccess" xml:space="preserve"><value>[{0:HH:mm:ss}] {1} stopped.</value></data>
+    <data name="LogStopError" xml:space="preserve"><value>[{0:HH:mm:ss}] ERROR during stop: {1}</value></data>
+    <data name="LogUninstallSuccess" xml:space="preserve"><value>[{0:HH:mm:ss}] {1} uninstalled.</value></data>
+    <data name="LogUninstallError" xml:space="preserve"><value>[{0:HH:mm:ss}] ERROR during uninstallation: {1}</value></data>
+    <data name="TitleError" xml:space="preserve"><value>Error</value></data>
+    <data name="MessageInstallFailed" xml:space="preserve"><value>Installation failed:
+{0}</value></data>
+    <data name="MessageStartFailed" xml:space="preserve"><value>Start failed:
+{0}</value></data>
+    <data name="MessageStopFailed" xml:space="preserve"><value>Stop failed:
+{0}</value></data>
+    <data name="ConfirmUninstallMessage" xml:space="preserve"><value>Do you really want to uninstall {0}?
+All data will be deleted!</value></data>
+    <data name="ConfirmUninstallTitle" xml:space="preserve"><value>Confirm uninstallation</value></data>
+    <data name="MessageUninstallFailed" xml:space="preserve"><value>Uninstallation failed:
+{0}</value></data>
+    <data name="ErrorMysqldNotFound" xml:space="preserve"><value>mysqld.exe not found.</value></data>
+    <data name="ErrorMysqlInitFailed" xml:space="preserve"><value>MySQL initialization failed (Exit {0}):
+{1}</value></data>
+    <data name="ErrorInstallDbNotFound" xml:space="preserve"><value>mysql_install_db.exe not found.</value></data>
+    <data name="ErrorMariaDbInitFailed" xml:space="preserve"><value>MariaDB initialization failed (Exit {0}):
+{1}{2}</value></data>
+    <data name="ErrorMysqldMariadbdNotFound" xml:space="preserve"><value>mysqld.exe / mariadbd.exe not found.</value></data>
+    <data name="ErrorInitdbPgctlNotFound" xml:space="preserve"><value>initdb.exe / pg_ctl.exe not found.</value></data>
+    <data name="ErrorPostgresInitFailed" xml:space="preserve"><value>PostgreSQL initialization failed (Exit {0}):
+{1}{2}</value></data>
+    <data name="ErrorPgCtlNotFound" xml:space="preserve"><value>pg_ctl.exe not found.</value></data>
+    <data name="ErrorPostgresStartFailed" xml:space="preserve"><value>PostgreSQL start failed (Exit {0})</value></data>
+</root>

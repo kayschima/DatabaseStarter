@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Windows.Input;
 using DatabaseStarter.Models;
 using DatabaseStarter.Services;
 
@@ -32,11 +33,20 @@ public class MainViewModel : ViewModelBase
 
             Databases.Add(new DatabaseViewModel(instance, engineService, _settingsService, _appSettings));
         }
+
+        ToggleLanguageCommand = new RelayCommand(ToggleLanguage);
     }
 
     public ObservableCollection<DatabaseViewModel> Databases { get; }
 
     public string Title => "Database Starter – Portable DB Manager";
+
+    /// <summary>
+    /// Label shows the language the user can switch TO (the other one).
+    /// </summary>
+    public string LanguageToggleLabel => _appSettings.Language == "de" ? "🇬🇧 EN" : "🇩🇪 DE";
+
+    public ICommand ToggleLanguageCommand { get; }
 
     public string AppVersion
     {
@@ -52,6 +62,21 @@ public class MainViewModel : ViewModelBase
                 version = version[..plusIndex];
             return version;
         }
+    }
+
+    /// <summary>
+    /// Raised after the user toggles the language.
+    /// The MainWindow subscribes and recreates itself so that all
+    /// x:Static bindings are re-evaluated with the new culture.
+    /// </summary>
+    public event EventHandler? LanguageChanged;
+
+    private void ToggleLanguage()
+    {
+        _appSettings.Language = _appSettings.Language == "de" ? "en" : "de";
+        _settingsService.Save(_appSettings);
+        App.ApplyLanguage(_appSettings.Language);
+        LanguageChanged?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>

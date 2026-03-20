@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:DatabaseStarter.Converters"
         xmlns:vm="clr-namespace:DatabaseStarter.ViewModels"
+        xmlns:res="clr-namespace:DatabaseStarter.Resources"
         mc:Ignorable="d"
-        Title="Database Starter – Portable DB Manager"
+        Title="{x:Static res:Strings.WindowTitle}"
         Icon="DatabaseStarter.ico"
         Height="800" Width="900"
         MinHeight="600" MinWidth="700"
@@ -331,8 +332,8 @@
                 <!-- Info Button (right-aligned) -->
                 <Button DockPanel.Dock="Right" Click="InfoButton_Click"
                         VerticalAlignment="Center" Cursor="Hand"
-                        Width="30" Height="30" Margin="12,0,0,0"
-                        ToolTip="Über Database Starter">
+                        Width="30" Height="30" Margin="8,0,0,0"
+                        ToolTip="{x:Static res:Strings.InfoButtonTooltip}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="infoBorder"
@@ -354,12 +355,41 @@
                     </Button.Template>
                 </Button>
 
+                <!-- Language Toggle Button (right-aligned) -->
+                <Button DockPanel.Dock="Right"
+                        Command="{Binding ToggleLanguageCommand}"
+                        Content="{Binding LanguageToggleLabel}"
+                        VerticalAlignment="Center" Cursor="Hand"
+                        Margin="8,0,0,0"
+                        FontSize="12" FontWeight="SemiBold"
+                        Foreground="#FFCDD6F4"
+                        ToolTip="Deutsch / English">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="langBorder"
+                                    Background="#FF313244" CornerRadius="8"
+                                    Padding="10,4">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="langBorder" Property="Background" Value="#FF45475A" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="langBorder" Property="Background" Value="#FF585B70" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="Database Starter"
                                FontSize="24" FontWeight="Bold"
                                Foreground="#FFCDD6F4" />
                     <DockPanel Margin="0,4,0,0">
-                        <TextBlock Text="Portable MySQL, MariaDB &amp; PostgreSQL Instanzen verwalten"
+                        <TextBlock Text="{x:Static res:Strings.Subtitle}"
                                    FontSize="13" Foreground="#FFA6ADC8" />
                         <TextBlock Text="{Binding AppVersion, StringFormat='v.{0}'}"
                                    FontSize="13" Foreground="#FF6C7086"
@@ -462,7 +492,7 @@
 
                                     <!-- Version -->
                                     <TextBlock Grid.Row="0" Grid.Column="0"
-                                               Text="Version" Foreground="#FF6C7086"
+                                               Text="{x:Static res:Strings.LabelVersion}" Foreground="#FF6C7086"
                                                FontSize="12" VerticalAlignment="Center"
                                                Margin="0,0,12,6" />
                                     <StackPanel Grid.Row="0" Grid.Column="1"
@@ -473,7 +503,8 @@
                                                   DisplayMemberPath="DisplayName"
                                                   MinWidth="160" Height="24" FontSize="11"
                                                   VerticalContentAlignment="Center" />
-                                        <TextBlock Text="(fixiert)" Foreground="#FF585B70"
+                                        <TextBlock Text="{x:Static res:Strings.LabelVersionLocked}"
+                                                   Foreground="#FF585B70"
                                                    FontSize="10" FontStyle="Italic"
                                                    VerticalAlignment="Center" Margin="8,0,0,0"
                                                    Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -481,7 +512,7 @@
 
                                     <!-- Port -->
                                     <TextBlock Grid.Row="1" Grid.Column="0"
-                                               Text="Port" Foreground="#FF6C7086"
+                                               Text="{x:Static res:Strings.LabelPort}" Foreground="#FF6C7086"
                                                FontSize="12" VerticalAlignment="Center"
                                                Margin="0,0,12,4" />
                                     <TextBlock Grid.Row="1" Grid.Column="1"
@@ -492,7 +523,7 @@
 
                                     <!-- Path + Progress -->
                                     <TextBlock Grid.Row="2" Grid.Column="0"
-                                               Text="Pfad" Foreground="#FF6C7086"
+                                               Text="{x:Static res:Strings.LabelPath}" Foreground="#FF6C7086"
                                                FontSize="12" VerticalAlignment="Center"
                                                Margin="0,0,12,0" />
                                     <DockPanel Grid.Row="2" Grid.Column="1">
@@ -525,7 +556,7 @@
                                 <!-- Row 4: Action buttons + Log expander -->
                                 <DockPanel Grid.Row="4">
                                     <!-- Log expander (right) -->
-                                    <Expander DockPanel.Dock="Right" Header="Log"
+                                    <Expander DockPanel.Dock="Right" Header="{x:Static res:Strings.ExpanderLog}"
                                               Foreground="#FF6C7086" FontSize="11"
                                               IsExpanded="False" VerticalAlignment="Center"
                                               Margin="8,0,0,0">
@@ -540,16 +571,16 @@
 
                                     <!-- Action buttons -->
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Button Content="📥 Installieren"
+                                        <Button Content="{x:Static res:Strings.ButtonInstall}"
                                                 Style="{StaticResource InstallButton}"
                                                 Command="{Binding InstallCommand}" />
-                                        <Button Content="▶ Starten"
+                                        <Button Content="{x:Static res:Strings.ButtonStart}"
                                                 Style="{StaticResource StartButton}"
                                                 Command="{Binding StartCommand}" />
-                                        <Button Content="⏹ Stoppen"
+                                        <Button Content="{x:Static res:Strings.ButtonStop}"
                                                 Style="{StaticResource StopButton}"
                                                 Command="{Binding StopCommand}" />
-                                        <Button Content="🗑 Deinstallieren"
+                                        <Button Content="{x:Static res:Strings.ButtonUninstall}"
                                                 Style="{StaticResource UninstallButton}"
                                                 Command="{Binding UninstallCommand}" />
                                     </StackPanel>
