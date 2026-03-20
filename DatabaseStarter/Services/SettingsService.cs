@@ -49,7 +49,7 @@ public class SettingsService
     {
         var basePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "DatabaseStarter");
+            "DatabaseStarter\\DB");
 
         return new AppSettings
         {
