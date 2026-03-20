@@ -108,18 +108,27 @@ public class DatabaseViewModel : ViewModelBase
     public string StatusText => Status switch
     {
         DatabaseStatus.NotInstalled => "Nicht installiert",
+        DatabaseStatus.Installing => DownloadProgress > 0 && DownloadProgress < 100
+            ? $"Wird installiert… {DownloadProgress:F0} %"
+            : "Wird installiert…",
         DatabaseStatus.Installed => "Installiert (gestoppt)",
         DatabaseStatus.Running => $"Läuft auf Port {InstanceInfo.Port}",
         _ => "Unbekannt"
     };
 
-    public bool IsInstalled => Status != DatabaseStatus.NotInstalled;
+    public bool IsInstalled => Status is DatabaseStatus.Installed or DatabaseStatus.Running;
     public bool IsRunning => Status == DatabaseStatus.Running;
 
     public double DownloadProgress
     {
         get => _downloadProgress;
-        set => SetField(ref _downloadProgress, value);
+        set
+        {
+            if (SetField(ref _downloadProgress, value))
+            {
+                OnPropertyChanged(nameof(StatusText));
+            }
+        }
     }
 
     public bool IsBusy
@@ -170,6 +179,7 @@ public class DatabaseViewModel : ViewModelBase
     private async Task InstallAsync()
     {
         IsBusy = true;
+        Status = DatabaseStatus.Installing;
         StatusMessage = "Wird heruntergeladen...";
         DownloadProgress = 0;
 

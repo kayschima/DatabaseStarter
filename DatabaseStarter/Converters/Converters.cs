@@ -15,6 +15,7 @@ public class StatusToBrushConverter : IValueConverter
             return status switch
             {
                 DatabaseStatus.NotInstalled => new SolidColorBrush(Color.FromRgb(158, 158, 158)),
+                DatabaseStatus.Installing => new SolidColorBrush(Color.FromRgb(255, 202, 40)),
                 DatabaseStatus.Installed => new SolidColorBrush(Color.FromRgb(33, 150, 243)),
                 DatabaseStatus.Running => new SolidColorBrush(Color.FromRgb(76, 175, 80)),
                 _ => new SolidColorBrush(Colors.Gray)
