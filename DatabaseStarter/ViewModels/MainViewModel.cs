@@ -42,9 +42,10 @@ public class MainViewModel : ViewModelBase
     public string Title => "Database Starter – Portable DB Manager";
 
     /// <summary>
-    /// Label shows the language the user can switch TO (the other one).
+    /// True when the target language (the one the user would switch TO) is German.
+    /// i.e. the app is currently in English → show German flag.
     /// </summary>
-    public string LanguageToggleLabel => _appSettings.Language == "de" ? "🇬🇧 EN" : "🇩🇪 DE";
+    public bool IsTargetLanguageGerman => _appSettings.Language != "de";
 
     public ICommand ToggleLanguageCommand { get; }
 

@@ -358,21 +358,71 @@
                 <!-- Language Toggle Button (right-aligned) -->
                 <Button DockPanel.Dock="Right"
                         Command="{Binding ToggleLanguageCommand}"
-                        Content="{Binding LanguageToggleLabel}"
                         VerticalAlignment="Center" Cursor="Hand"
                         Margin="8,0,0,0"
-                        FontSize="12" FontWeight="SemiBold"
-                        Foreground="#FFCDD6F4"
                         ToolTip="Deutsch / English">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="langBorder"
                                     Background="#FF313244" CornerRadius="8"
-                                    Padding="10,4">
-                                <ContentPresenter HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center" />
+                                    Padding="6,4">
+                                <Grid>
+                                    <!-- German flag (black-red-gold) -->
+                                    <Border x:Name="FlagDE" Width="28" Height="20"
+                                            CornerRadius="2" ClipToBounds="True"
+                                            Visibility="Collapsed">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Rectangle Grid.Row="0" Fill="#FF000000" />
+                                            <Rectangle Grid.Row="1" Fill="#FFDD0000" />
+                                            <Rectangle Grid.Row="2" Fill="#FFFFCC00" />
+                                        </Grid>
+                                    </Border>
+                                    <!-- UK flag (Union Jack) -->
+                                    <Border x:Name="FlagGB" Width="28" Height="20"
+                                            CornerRadius="2" ClipToBounds="True"
+                                            Visibility="Collapsed">
+                                        <Canvas Width="28" Height="20">
+                                            <!-- Blue background -->
+                                            <Rectangle Canvas.Left="0" Canvas.Top="0"
+                                                       Width="28" Height="20" Fill="#FF012169" />
+                                            <!-- White diagonal stripes -->
+                                            <Line X1="0" Y1="0" X2="28" Y2="20"
+                                                  Stroke="White" StrokeThickness="4" />
+                                            <Line X1="28" Y1="0" X2="0" Y2="20"
+                                                  Stroke="White" StrokeThickness="4" />
+                                            <!-- Red diagonal stripes -->
+                                            <Line X1="0" Y1="0" X2="28" Y2="20"
+                                                  Stroke="#FFC8102E" StrokeThickness="1.6" />
+                                            <Line X1="28" Y1="0" X2="0" Y2="20"
+                                                  Stroke="#FFC8102E" StrokeThickness="1.6" />
+                                            <!-- White cross -->
+                                            <Rectangle Canvas.Left="0" Canvas.Top="8"
+                                                       Width="28" Height="4" Fill="White" />
+                                            <Rectangle Canvas.Left="12" Canvas.Top="0"
+                                                       Width="4" Height="20" Fill="White" />
+                                            <!-- Red cross -->
+                                            <Rectangle Canvas.Left="0" Canvas.Top="8.8"
+                                                       Width="28" Height="2.4" Fill="#FFC8102E" />
+                                            <Rectangle Canvas.Left="12.8" Canvas.Top="0"
+                                                       Width="2.4" Height="20" Fill="#FFC8102E" />
+                                        </Canvas>
+                                    </Border>
+                                </Grid>
                             </Border>
                             <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsTargetLanguageGerman}" Value="True">
+                                    <Setter TargetName="FlagDE" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="FlagGB" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsTargetLanguageGerman}" Value="False">
+                                    <Setter TargetName="FlagGB" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="FlagDE" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="langBorder" Property="Background" Value="#FF45475A" />
                                 </Trigger>
@@ -384,17 +434,19 @@
                     </Button.Template>
                 </Button>
 
+                <!-- Version (right-aligned, vertically centered with buttons) -->
+                <TextBlock DockPanel.Dock="Right"
+                           Text="{Binding AppVersion, StringFormat='v.{0}'}"
+                           FontSize="13" Foreground="#FF6C7086"
+                           VerticalAlignment="Center" Margin="8,0,0,0" />
+
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="Database Starter"
                                FontSize="24" FontWeight="Bold"
                                Foreground="#FFCDD6F4" />
-                    <DockPanel Margin="0,4,0,0">
-                        <TextBlock Text="{x:Static res:Strings.Subtitle}"
-                                   FontSize="13" Foreground="#FFA6ADC8" />
-                        <TextBlock Text="{Binding AppVersion, StringFormat='v.{0}'}"
-                                   FontSize="13" Foreground="#FF6C7086"
-                                   HorizontalAlignment="Right" Margin="12,0,0,0" />
-                    </DockPanel>
+                    <TextBlock Text="{x:Static res:Strings.Subtitle}"
+                               FontSize="13" Foreground="#FFA6ADC8"
+                               Margin="0,4,0,0" />
                 </StackPanel>
             </DockPanel>
         </Border>
