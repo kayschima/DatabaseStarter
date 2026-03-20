@@ -80,14 +80,17 @@ public class PostgreSqlEngineService : IDatabaseEngineService
         if (!File.Exists(pgCtl))
             throw new FileNotFoundException("pg_ctl.exe nicht gefunden.", pgCtl);
 
-        var result = await _processService.RunProcessAsync(
+        // pg_ctl start forks a child postgres process. We must NOT redirect
+        // stdout/stderr because the child inherits the pipe handles, which
+        // would cause ReadToEndAsync to block forever.
+        var exitCode = await _processService.RunProcessNoRedirectAsync(
             pgCtl,
             $"start -D \"{info.DataDir}\" -o \"-p {info.Port}\" -w",
             info.InstallPath);
 
-        if (result.ExitCode != 0)
+        if (exitCode != 0)
             throw new InvalidOperationException(
-                $"PostgreSQL-Start fehlgeschlagen (Exit {result.ExitCode}):\n{result.Error}\n{result.Output}");
+                $"PostgreSQL-Start fehlgeschlagen (Exit {exitCode})");
 
         // Find the postgres process - pg_ctl starts it as a child
         // Read the PID from the postmaster.pid file

@@ -8,15 +8,15 @@ namespace DatabaseStarter.ViewModels;
 
 public class DatabaseViewModel : ViewModelBase
 {
+    private readonly AppSettings _appSettings;
     private readonly IDatabaseEngineService _engineService;
     private readonly SettingsService _settingsService;
-    private readonly AppSettings _appSettings;
-    private DatabaseStatus _status;
     private double _downloadProgress;
     private bool _isBusy;
-    private string _statusMessage = string.Empty;
     private string _logOutput = string.Empty;
     private DatabaseVersionInfo _selectedVersion;
+    private DatabaseStatus _status;
+    private string _statusMessage = string.Empty;
 
     public DatabaseViewModel(
         DatabaseInstanceInfo instanceInfo,
@@ -43,7 +43,7 @@ public class DatabaseViewModel : ViewModelBase
         StopCommand = new AsyncRelayCommand(StopAsync,
             () => !IsBusy && Status == DatabaseStatus.Running);
         UninstallCommand = new AsyncRelayCommand(UninstallAsync,
-            () => !IsBusy && Status != DatabaseStatus.NotInstalled);
+            () => !IsBusy && Status == DatabaseStatus.Installed);
 
         // Initial status
         RefreshStatus();
@@ -328,4 +328,3 @@ public class DatabaseViewModel : ViewModelBase
         LogOutput = string.IsNullOrEmpty(LogOutput) ? message : $"{LogOutput}\n{message}";
     }
 }
-

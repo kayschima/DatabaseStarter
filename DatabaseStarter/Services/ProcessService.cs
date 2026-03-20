@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.IO;
 
 namespace DatabaseStarter.Services;
 
@@ -55,6 +54,32 @@ public class ProcessService
     }
 
     /// <summary>
+    /// Runs a process WITHOUT redirecting stdout/stderr and waits for it to exit.
+    /// Use this when the process forks a long-running child (e.g. pg_ctl start)
+    /// to avoid deadlocking on inherited pipe handles.
+    /// </summary>
+    public async Task<int> RunProcessNoRedirectAsync(
+        string fileName, string arguments, string workingDirectory, CancellationToken ct = default)
+    {
+        var psi = new ProcessStartInfo
+        {
+            FileName = fileName,
+            Arguments = arguments,
+            WorkingDirectory = workingDirectory,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = false,
+            RedirectStandardError = false
+        };
+
+        using var process = Process.Start(psi)
+                            ?? throw new InvalidOperationException($"Failed to start process: {fileName}");
+
+        await process.WaitForExitAsync(ct);
+        return process.ExitCode;
+    }
+
+    /// <summary>
     /// Checks whether a process with a given PID is still running.
     /// </summary>
     public bool IsProcessRunning(int processId)
@@ -92,4 +117,3 @@ public class ProcessService
         }
     }
 }
-
