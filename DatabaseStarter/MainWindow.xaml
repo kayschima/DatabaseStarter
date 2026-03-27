@@ -9,8 +9,8 @@
         mc:Ignorable="d"
         Title="{x:Static res:Strings.WindowTitle}"
         Icon="DatabaseStarter.ico"
-        Height="850" Width="700"
-        MinHeight="850" MinWidth="700"
+        Height="800" Width="700"
+        MinHeight="800" MinWidth="700"
         WindowStartupLocation="CenterScreen"
         Background="#FF1E1E2E">
 
@@ -531,10 +531,9 @@
                                 <Rectangle Grid.Row="1" Height="1" Margin="0,10"
                                            Fill="#20FFFFFF" />
 
-                                <!-- Row 2: Details — Version / Port / Path / Progress -->
+                                <!-- Row 2: Details — Version + Port nebeneinander / Path / Progress -->
                                 <Grid Grid.Row="2" VerticalAlignment="Top">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
@@ -543,45 +542,73 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Version -->
-                                    <TextBlock Grid.Row="0" Grid.Column="0"
-                                               Text="{x:Static res:Strings.LabelVersion}" Foreground="#FF6C7086"
-                                               FontSize="12" VerticalAlignment="Center"
-                                               Margin="0,0,12,6" />
-                                    <StackPanel Grid.Row="0" Grid.Column="1"
-                                                Orientation="Horizontal" Margin="0,0,0,6">
-                                        <ComboBox ItemsSource="{Binding AvailableVersions}"
-                                                  SelectedItem="{Binding SelectedVersion}"
-                                                  IsEnabled="{Binding CanChangeVersion}"
-                                                  DisplayMemberPath="DisplayName"
-                                                  MinWidth="160" Height="24" FontSize="11"
-                                                  VerticalContentAlignment="Center" />
-                                        <TextBlock Text="{x:Static res:Strings.LabelVersionLocked}"
-                                                   Foreground="#FF585B70"
-                                                   FontSize="10" FontStyle="Italic"
-                                                   VerticalAlignment="Center" Margin="8,0,0,0"
-                                                   Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    </StackPanel>
+                                    <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <!-- Port -->
-                                    <TextBlock Grid.Row="1" Grid.Column="0"
-                                               Text="{x:Static res:Strings.LabelPort}" Foreground="#FF6C7086"
-                                               FontSize="12" VerticalAlignment="Center"
-                                               Margin="0,0,12,4" />
-                                    <TextBlock Grid.Row="1" Grid.Column="1"
-                                               Text="{Binding Port, Mode=OneWay}"
-                                               Foreground="#FFCDD6F4" FontSize="12"
-                                               FontWeight="SemiBold" VerticalAlignment="Center"
-                                               Margin="0,0,0,4" />
+                                        <!-- Version -->
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{x:Static res:Strings.LabelVersion}" Foreground="#FF6C7086"
+                                                   FontSize="12" VerticalAlignment="Center"
+                                                   Margin="0,0,12,0" />
+                                        <Grid Grid.Column="1">
+                                            <ComboBox ItemsSource="{Binding AvailableVersions}"
+                                                      SelectedItem="{Binding SelectedVersion}"
+                                                      IsEnabled="{Binding CanChangeVersion}"
+                                                      DisplayMemberPath="DisplayName"
+                                                      MinWidth="160" Height="24" FontSize="11"
+                                                      VerticalContentAlignment="Center"
+                                                      Visibility="{Binding ShowVersionSelector, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                            <TextBox Text="{Binding VersionDisplayName, Mode=OneWay}"
+                                                     IsReadOnly="True"
+                                                     MinWidth="160" Height="24" FontSize="11"
+                                                     VerticalContentAlignment="Center"
+                                                     Background="#FF3A3A4E"
+                                                     Foreground="#FFCDD6F4"
+                                                     BorderBrush="#FF585B70"
+                                                     BorderThickness="1"
+                                                     Padding="6,3"
+                                                     Visibility="{Binding ShowInstalledVersionText, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        </Grid>
+
+                                        <!-- Port -->
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{x:Static res:Strings.LabelPort}" Foreground="#FF6C7086"
+                                                   FontSize="12" VerticalAlignment="Center"
+                                                   Margin="18,0,12,0" />
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding Port, Mode=OneWay}"
+                                                   Foreground="#FFCDD6F4" FontSize="12"
+                                                   FontWeight="SemiBold" VerticalAlignment="Center" />
+                                    </Grid>
+
 
                                     <!-- Path + Progress -->
-                                    <TextBlock Grid.Row="2" Grid.Column="0"
+                                    <TextBlock Grid.Row="1" Grid.Column="0"
                                                Text="{x:Static res:Strings.LabelPath}" Foreground="#FF6C7086"
                                                FontSize="12" VerticalAlignment="Center"
                                                Margin="0,0,12,0" />
-                                    <DockPanel Grid.Row="2" Grid.Column="1">
+                                    <Grid Grid.Row="1" Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Path text (always left-aligned next to label) -->
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding InstallPath, Mode=OneWay}"
+                                                   Foreground="#FF89B4FA" FontSize="11"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left"
+                                                   TextAlignment="Left"
+                                                   TextTrimming="CharacterEllipsis" />
+
                                         <!-- Progress (right) -->
-                                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal"
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal"
                                                     VerticalAlignment="Center"
                                                     Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
                                                     Margin="14,0,0,0">
@@ -594,12 +621,7 @@
                                                        Margin="8,0,0,0" VerticalAlignment="Center"
                                                        MaxWidth="160" TextTrimming="CharacterEllipsis" />
                                         </StackPanel>
-                                        <!-- Path text -->
-                                        <TextBlock Text="{Binding InstallPath, Mode=OneWay}"
-                                                   Foreground="#FF89B4FA" FontSize="11"
-                                                   VerticalAlignment="Center"
-                                                   TextTrimming="CharacterEllipsis" />
-                                    </DockPanel>
+                                    </Grid>
                                 </Grid>
 
                                 <!-- Row 3: Separator -->

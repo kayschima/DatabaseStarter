@@ -88,6 +88,13 @@ public class DatabaseViewModel : ViewModelBase
 
     public string VersionDisplayName => _selectedVersion.DisplayName;
 
+    public bool IsInstalledAndInitialized =>
+        (Status is DatabaseStatus.Installed or DatabaseStatus.Running) && InstanceInfo.IsInitialized;
+
+    public bool ShowVersionSelector => !IsInstalledAndInitialized;
+
+    public bool ShowInstalledVersionText => IsInstalledAndInitialized;
+
     /// <summary>Version can only be changed when not yet installed.</summary>
     public bool CanChangeVersion => Status == DatabaseStatus.NotInstalled && !IsBusy;
 
@@ -101,6 +108,9 @@ public class DatabaseViewModel : ViewModelBase
                 OnPropertyChanged(nameof(StatusText));
                 OnPropertyChanged(nameof(IsInstalled));
                 OnPropertyChanged(nameof(IsRunning));
+                OnPropertyChanged(nameof(IsInstalledAndInitialized));
+                OnPropertyChanged(nameof(ShowVersionSelector));
+                OnPropertyChanged(nameof(ShowInstalledVersionText));
                 OnPropertyChanged(nameof(CanChangeVersion));
             }
         }
@@ -139,6 +149,8 @@ public class DatabaseViewModel : ViewModelBase
         {
             if (SetField(ref _isBusy, value))
             {
+                OnPropertyChanged(nameof(ShowVersionSelector));
+                OnPropertyChanged(nameof(ShowInstalledVersionText));
                 OnPropertyChanged(nameof(CanChangeVersion));
             }
         }
@@ -320,6 +332,10 @@ public class DatabaseViewModel : ViewModelBase
     public void RefreshStatus()
     {
         Status = _engineService.GetStatus(InstanceInfo);
+        OnPropertyChanged(nameof(IsInstalledAndInitialized));
+        OnPropertyChanged(nameof(ShowVersionSelector));
+        OnPropertyChanged(nameof(ShowInstalledVersionText));
+        OnPropertyChanged(nameof(CanChangeVersion));
     }
 
     private void SaveSettings()

@@ -7,8 +7,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>DatabaseStarter.ico</ApplicationIcon>
-        <Version>0.1.2</Version>
+        <Version>0.1.3</Version>
         <NeutralLanguage>en</NeutralLanguage>
+        <Title>DatabaseStarter</Title>
+        <Authors>Kay Markschies</Authors>
     </PropertyGroup>
 
     <ItemGroup>
