@@ -11,6 +11,12 @@
         <NeutralLanguage>en</NeutralLanguage>
         <Title>DatabaseStarter</Title>
         <Authors>Kay Markschies</Authors>
+        <Description>Database Starter is a portable desktop application for managing local database servers on Windows.</Description>
+        <Copyright>published under MIT license at Github</Copyright>
+        <PackageProjectUrl>https://github.com/kayschima/DatabaseStarter</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/kayschima/DatabaseStarter/blob/main/LICENSE</PackageLicenseUrl>
+        <PackageIcon>DatabaseStarter.jpg</PackageIcon>
+        <RepositoryUrl>https://github.com/kayschima/DatabaseStarter</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
