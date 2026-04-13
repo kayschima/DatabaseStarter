@@ -36,6 +36,12 @@ public class DatabaseViewModel : ViewModelBase
 
         // Resolve current version
         _selectedVersion = DatabaseDefaults.ResolveVersion(instanceInfo);
+        InstanceInfo.Version = _selectedVersion.Version;
+
+        if (AvailableVersions.All(v => v.Version != _selectedVersion.Version))
+        {
+            AvailableVersions.Insert(0, _selectedVersion);
+        }
 
         InstallCommand = new AsyncRelayCommand(InstallAsync,
             () => !IsBusy && Status == DatabaseStatus.NotInstalled);
@@ -75,7 +81,7 @@ public class DatabaseViewModel : ViewModelBase
         get => _selectedVersion;
         set
         {
-            if (_selectedVersion != value && value is not null)
+            if (_selectedVersion != value)
             {
                 _selectedVersion = value;
                 InstanceInfo.Version = value.Version;

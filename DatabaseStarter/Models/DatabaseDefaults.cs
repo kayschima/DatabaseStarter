@@ -107,8 +107,26 @@ public static class DatabaseDefaults
 
     public static DatabaseVersionInfo? FindVersion(DatabaseEngine engine, string version)
     {
+        var normalizedVersion = NormalizeVersionNumber(version);
         var versions = GetAvailableVersions(engine);
-        return versions.FirstOrDefault(v => v.Version == version);
+        return versions.FirstOrDefault(v => NormalizeVersionNumber(v.Version) == normalizedVersion);
+    }
+
+    public static string NormalizeVersionNumber(string? version)
+    {
+        if (string.IsNullOrWhiteSpace(version))
+        {
+            return string.Empty;
+        }
+
+        var normalized = version.Trim();
+
+        while (normalized.EndsWith(".0", StringComparison.Ordinal))
+        {
+            normalized = normalized[..^2];
+        }
+
+        return normalized;
     }
 
     /// <summary>
@@ -121,10 +139,28 @@ public static class DatabaseDefaults
         {
             var found = FindVersion(info.Engine, info.Version);
             if (found is not null) return found;
+
+            var normalizedVersion = NormalizeVersionNumber(info.Version);
+            if (!string.IsNullOrWhiteSpace(normalizedVersion))
+            {
+                return new DatabaseVersionInfo
+                {
+                    Version = normalizedVersion,
+                    DisplayName = $"{GetEngineDisplayName(info.Engine)} {normalizedVersion}"
+                };
+            }
         }
 
         return GetDefaultVersion(info.Engine);
     }
+
+    private static string GetEngineDisplayName(DatabaseEngine engine) => engine switch
+    {
+        DatabaseEngine.MySQL => "MySQL",
+        DatabaseEngine.MariaDB => "MariaDB",
+        DatabaseEngine.PostgreSQL => "PostgreSQL",
+        _ => engine.ToString()
+    };
 
     public static int GetDefaultPort(DatabaseEngine engine) => engine switch
     {
