@@ -1,0 +1,81 @@
+{
+  "MySQL": [
+    {
+      "version": "9.5.0",
+      "displayName": "MySQL 9.5.0",
+      "downloadUrl": "https://cdn.mysql.com/archives/mysql-9.5/mysql-9.5.0-winx64.zip",
+      "extractFolder": "mysql"
+    },
+    {
+      "version": "8.4.7",
+      "displayName": "MySQL 8.4.7",
+      "downloadUrl": "https://cdn.mysql.com/archives/mysql-8.4/mysql-8.4.7-winx64.zip",
+      "extractFolder": "mysql"
+    },
+    {
+      "version": "8.0.44",
+      "displayName": "MySQL 8.0.44",
+      "downloadUrl": "https://cdn.mysql.com/archives/mysql-8.0/mysql-8.0.44-winx64.zip",
+      "extractFolder": "mysql"
+    }
+  ],
+  "MariaDB": [
+    {
+      "version": "12.2.2",
+      "displayName": "MariaDB 12.2.2",
+      "downloadUrl": "https://archive.mariadb.org/mariadb-12.2.2/winx64-packages/mariadb-12.2.2-winx64.zip",
+      "extractFolder": "mariadb"
+    },
+    {
+      "version": "11.8.6",
+      "displayName": "MariaDB 11.8.6",
+      "downloadUrl": "https://archive.mariadb.org/mariadb-11.8.6/winx64-packages/mariadb-11.8.6-winx64.zip",
+      "extractFolder": "mariadb"
+    },
+    {
+      "version": "11.4.10",
+      "displayName": "MariaDB 11.4.10",
+      "downloadUrl": "https://archive.mariadb.org/mariadb-11.4.10/winx64-packages/mariadb-11.4.10-winx64.zip",
+      "extractFolder": "mariadb"
+    },
+    {
+      "version": "10.11.16",
+      "displayName": "MariaDB 10.11.16",
+      "downloadUrl": "https://archive.mariadb.org/mariadb-10.11.16/winx64-packages/mariadb-10.11.16-winx64.zip",
+      "extractFolder": "mariadb"
+    }
+  ],
+  "PostgreSQL": [
+    {
+      "version": "18.3",
+      "displayName": "PostgreSQL 18.3",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-18.3-1-windows-x64-binaries.zip",
+      "extractFolder": "pgsql"
+    },
+    {
+      "version": "17.9",
+      "displayName": "PostgreSQL 17.9",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-17.9-1-windows-x64-binaries.zip",
+      "extractFolder": "pgsql"
+    },
+    {
+      "version": "16.13",
+      "displayName": "PostgreSQL 16.13",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-16.13-1-windows-x64-binaries.zip",
+      "extractFolder": "pgsql"
+    },
+    {
+      "version": "16.3",
+      "displayName": "PostgreSQL 16.3",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-16.3-1-windows-x64-binaries.zip",
+      "extractFolder": "pgsql"
+    },
+    {
+      "version": "15.17",
+      "displayName": "PostgreSQL 15.17",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-15.17-1-windows-x64-binaries.zip",
+      "extractFolder": "pgsql"
+    }
+  ]
+}
+

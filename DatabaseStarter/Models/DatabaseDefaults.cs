@@ -1,3 +1,7 @@
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Text.Json;
+
 namespace DatabaseStarter.Models;
 
 public static class DatabaseDefaults
@@ -6,98 +10,32 @@ public static class DatabaseDefaults
     public const int MariaDbDefaultPort = 3307;
     public const int PostgreSqlDefaultPort = 5432;
 
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
+    private static readonly Lazy<IReadOnlyDictionary<DatabaseEngine, IReadOnlyList<DatabaseVersionInfo>>>
+        AvailableVersionsByEngine =
+            new(LoadAvailableVersions);
+
     // ── Available versions per engine ──────────────────────────────────
 
-    public static readonly IReadOnlyList<DatabaseVersionInfo> MySqlVersions = new List<DatabaseVersionInfo>
-    {
-        new()
-        {
-            Version = "9.5.0", DisplayName = "MySQL 9.5.0",
-            DownloadUrl = "https://cdn.mysql.com/archives/mysql-9.5/mysql-9.5.0-winx64.zip", ExtractFolder = "mysql"
-        },
-        new()
-        {
-            Version = "8.4.7", DisplayName = "MySQL 8.4.7",
-            DownloadUrl = "https://cdn.mysql.com/archives/mysql-8.4/mysql-8.4.7-winx64.zip", ExtractFolder = "mysql"
-        },
-        new()
-        {
-            Version = "8.0.44", DisplayName = "MySQL 8.0.44",
-            DownloadUrl = "https://cdn.mysql.com/archives/mysql-8.0/mysql-8.0.44-winx64.zip", ExtractFolder = "mysql"
-        },
-    };
+    public static IReadOnlyList<DatabaseVersionInfo> MySqlVersions => GetAvailableVersions(DatabaseEngine.MySQL);
 
-    public static readonly IReadOnlyList<DatabaseVersionInfo> MariaDbVersions = new List<DatabaseVersionInfo>
-    {
-        new()
-        {
-            Version = "12.2.2", DisplayName = "MariaDB 12.2.2",
-            DownloadUrl = "https://archive.mariadb.org/mariadb-12.2.2/winx64-packages/mariadb-12.2.2-winx64.zip",
-            ExtractFolder = "mariadb"
-        },
-        new()
-        {
-            Version = "11.8.6", DisplayName = "MariaDB 11.8.6",
-            DownloadUrl = "https://archive.mariadb.org/mariadb-11.8.6/winx64-packages/mariadb-11.8.6-winx64.zip",
-            ExtractFolder = "mariadb"
-        },
-        new()
-        {
-            Version = "11.4.10", DisplayName = "MariaDB 11.4.10",
-            DownloadUrl = "https://archive.mariadb.org/mariadb-11.4.10/winx64-packages/mariadb-11.4.10-winx64.zip",
-            ExtractFolder = "mariadb"
-        },
-        new()
-        {
-            Version = "10.11.16", DisplayName = "MariaDB 10.11.16",
-            DownloadUrl = "https://archive.mariadb.org/mariadb-10.11.16/winx64-packages/mariadb-10.11.16-winx64.zip",
-            ExtractFolder = "mariadb"
-        },
-    };
+    public static IReadOnlyList<DatabaseVersionInfo> MariaDbVersions => GetAvailableVersions(DatabaseEngine.MariaDB);
 
-    public static readonly IReadOnlyList<DatabaseVersionInfo> PostgreSqlVersions = new List<DatabaseVersionInfo>
-    {
-        new()
-        {
-            Version = "18.3", DisplayName = "PostgreSQL 18.3",
-            DownloadUrl = "https://get.enterprisedb.com/postgresql/postgresql-18.3-1-windows-x64-binaries.zip",
-            ExtractFolder = "pgsql"
-        },
-        new()
-        {
-            Version = "17.9", DisplayName = "PostgreSQL 17.9",
-            DownloadUrl = "https://get.enterprisedb.com/postgresql/postgresql-17.9-1-windows-x64-binaries.zip",
-            ExtractFolder = "pgsql"
-        },
-        new()
-        {
-            Version = "16.13", DisplayName = "PostgreSQL 16.13",
-            DownloadUrl = "https://get.enterprisedb.com/postgresql/postgresql-16.13-1-windows-x64-binaries.zip",
-            ExtractFolder = "pgsql"
-        },
-        new()
-        {
-            Version = "16.3", DisplayName = "PostgreSQL 16.3",
-            DownloadUrl = "https://get.enterprisedb.com/postgresql/postgresql-16.3-1-windows-x64-binaries.zip",
-            ExtractFolder = "pgsql"
-        },
-        new()
-        {
-            Version = "15.17", DisplayName = "PostgreSQL 15.17",
-            DownloadUrl = "https://get.enterprisedb.com/postgresql/postgresql-15.17-1-windows-x64-binaries.zip",
-            ExtractFolder = "pgsql"
-        },
-    };
+    public static IReadOnlyList<DatabaseVersionInfo> PostgreSqlVersions =>
+        GetAvailableVersions(DatabaseEngine.PostgreSQL);
 
     // ── Helper methods ─────────────────────────────────────────────────
 
-    public static IReadOnlyList<DatabaseVersionInfo> GetAvailableVersions(DatabaseEngine engine) => engine switch
-    {
-        DatabaseEngine.MySQL => MySqlVersions,
-        DatabaseEngine.MariaDB => MariaDbVersions,
-        DatabaseEngine.PostgreSQL => PostgreSqlVersions,
-        _ => throw new ArgumentOutOfRangeException(nameof(engine))
-    };
+    public static IReadOnlyList<DatabaseVersionInfo> GetAvailableVersions(DatabaseEngine engine) =>
+        AvailableVersionsByEngine.Value.TryGetValue(engine, out var versions)
+            ? versions
+            : throw new ArgumentOutOfRangeException(nameof(engine));
+
+    public static void EnsureAvailableVersionsLoaded() => _ = AvailableVersionsByEngine.Value;
 
     public static DatabaseVersionInfo GetDefaultVersion(DatabaseEngine engine)
     {
@@ -169,4 +107,89 @@ public static class DatabaseDefaults
         DatabaseEngine.PostgreSQL => PostgreSqlDefaultPort,
         _ => throw new ArgumentOutOfRangeException(nameof(engine))
     };
+
+    private static IReadOnlyDictionary<DatabaseEngine, IReadOnlyList<DatabaseVersionInfo>> LoadAvailableVersions()
+    {
+        var filePath = Path.Combine(AppContext.BaseDirectory, "Data", "database-versions.json");
+        if (!File.Exists(filePath))
+        {
+            throw new FileNotFoundException(
+                $"Die Versionskonfiguration wurde nicht gefunden: '{filePath}'.",
+                filePath);
+        }
+
+        try
+        {
+            var json = File.ReadAllText(filePath);
+            var config = JsonSerializer.Deserialize<Dictionary<string, List<DatabaseVersionInfo>?>>(json, JsonOptions);
+
+            if (config is null || config.Count == 0)
+            {
+                throw new InvalidOperationException("Die Versionskonfiguration ist leer oder ungültig.");
+            }
+
+            var versionsByEngine = new Dictionary<DatabaseEngine, IReadOnlyList<DatabaseVersionInfo>>();
+
+            foreach (var engine in Enum.GetValues<DatabaseEngine>())
+            {
+                var engineKey = engine.ToString();
+                if (!config.TryGetValue(engineKey, out List<DatabaseVersionInfo>? versions) || versions is null ||
+                    versions.Count == 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Für die Datenbank-Engine '{engineKey}' wurden keine Versionen konfiguriert.");
+                }
+
+                ValidateVersions(engine, versions);
+                versionsByEngine[engine] = new ReadOnlyCollection<DatabaseVersionInfo>(versions);
+            }
+
+            return new ReadOnlyDictionary<DatabaseEngine, IReadOnlyList<DatabaseVersionInfo>>(versionsByEngine);
+        }
+        catch (JsonException ex)
+        {
+            throw new InvalidOperationException("Die Versionskonfiguration konnte nicht gelesen werden.", ex);
+        }
+    }
+
+    private static void ValidateVersions(DatabaseEngine engine, IEnumerable<DatabaseVersionInfo> versions)
+    {
+        var seenVersions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var version in versions)
+        {
+            if (string.IsNullOrWhiteSpace(version.Version))
+            {
+                throw new InvalidOperationException(
+                    $"Eine konfigurierte Version für '{engine}' enthält keine Versionsnummer.");
+            }
+
+            if (string.IsNullOrWhiteSpace(version.DisplayName))
+            {
+                throw new InvalidOperationException(
+                    $"Die konfigurierte Version '{version.Version}' für '{engine}' enthält keinen Anzeigenamen.");
+            }
+
+            if (string.IsNullOrWhiteSpace(version.DownloadUrl) ||
+                !Uri.TryCreate(version.DownloadUrl, UriKind.Absolute, out var downloadUri) ||
+                (downloadUri.Scheme != Uri.UriSchemeHttp && downloadUri.Scheme != Uri.UriSchemeHttps))
+            {
+                throw new InvalidOperationException(
+                    $"Die konfigurierte Version '{version.Version}' für '{engine}' enthält keine gültige Download-URL.");
+            }
+
+            if (string.IsNullOrWhiteSpace(version.ExtractFolder))
+            {
+                throw new InvalidOperationException(
+                    $"Die konfigurierte Version '{version.Version}' für '{engine}' enthält keinen ExtractFolder-Wert.");
+            }
+
+            var normalizedVersion = NormalizeVersionNumber(version.Version);
+            if (!seenVersions.Add(normalizedVersion))
+            {
+                throw new InvalidOperationException(
+                    $"Die Versionskonfiguration für '{engine}' enthält die Version '{version.Version}' mehrfach.");
+            }
+        }
+    }
 }
