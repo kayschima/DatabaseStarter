@@ -3,3 +3,5 @@
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/.idea
+DatabaseStarter.sln.DotSettings.user
