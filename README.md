@@ -2,7 +2,7 @@
 
 > Manage portable MySQL, MariaDB & PostgreSQL instances on Windows — without traditional installation.
 
-![Version](https://img.shields.io/badge/Version-0.1.2-blue)
+![Version](https://img.shields.io/badge/Version-0.1.4-blue)
 ![.NET](https://img.shields.io/badge/.NET-10.0-purple)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -94,20 +94,22 @@ dotnet run --project DatabaseStarter
 DatabaseStarter/
 ├── DatabaseStarter.sln              # Solution file
 └── DatabaseStarter/                 # WPF main project
-    ├── App.xaml(.cs)                # Application Entry Point
+    ├── App.xaml(.cs)                # Application entry point with controlled startup & config validation
     ├── MainWindow.xaml(.cs)         # Main window (UI)
     ├── Converters/
     │   └── Converters.cs            # WPF Value Converters (Status → Color, etc.)
+    ├── Data/
+    │   └── database-versions.json   # Version catalog per engine incl. download URLs and extract folders
     ├── Models/
     │   ├── AppSettings.cs           # Persisted application settings
-    │   ├── DatabaseDefaults.cs      # Default versions, ports & download URLs
+    │   ├── DatabaseDefaults.cs      # Loads and validates the external version catalog; provides defaults and helpers
     │   ├── DatabaseEngine.cs        # Enum: MySQL, MariaDB, PostgreSQL
     │   ├── DatabaseInstanceInfo.cs  # Instance configuration (path, port, version, …)
     │   ├── DatabaseStatus.cs        # Enum: NotInstalled, Installing, Installed, Running
     │   └── DatabaseVersionInfo.cs   # Version information incl. download URL
     ├── Resources/
-    │   ├── Strings.resx             # Localized strings (German, default)
-    │   ├── Strings.en.resx          # Localized strings (English)
+    │   ├── Strings.resx             # Localized strings (default / English)
+    │   ├── Strings.de.resx          # Localized strings (German)
     │   └── Strings.Designer.cs      # Auto-generated resource accessor
     ├── Services/
     │   ├── IDatabaseEngineService.cs    # Interface for engine-specific operations
@@ -128,11 +130,19 @@ DatabaseStarter/
 
 ## ⚙️ Configuration
 
-Settings are automatically saved in `settings.json` next to the application:
+Database Starter uses two JSON-based configuration files located next to the application output:
+
+- `settings.json` — persisted user settings such as base path, selected language, versions, ports and install locations
+- `Data/database-versions.json` — central version catalog for MySQL, MariaDB and PostgreSQL, including download URLs and extract folders
+
+### `settings.json`
+
+User settings are automatically saved in `settings.json` in the application directory:
 
 ```json
 {
   "BasePath": "C:\\Users\\<User>\\AppData\\Local\\DatabaseStarter",
+  "Language": "en",
   "Instances": [
     {
       "Engine": 0,
@@ -149,11 +159,58 @@ Settings are automatically saved in `settings.json` next to the application:
 | Field          | Description                                      |
 |----------------|--------------------------------------------------|
 | `BasePath`     | Base directory for all database installations    |
+| `Language`     | UI language (`en` or `de`)                       |
 | `Engine`       | 0 = MySQL, 1 = MariaDB, 2 = PostgreSQL          |
 | `Version`      | Selected version of the engine                   |
 | `InstallPath`  | Installation directory of the portable binaries  |
 | `DataDir`      | Data directory of the database                   |
 | `Port`         | TCP port the server listens on                   |
+| `IsInitialized`| Whether the data directory has already been initialized |
+
+### `Data/database-versions.json`
+
+The available database versions are configured in `Data/database-versions.json` and loaded at startup by `DatabaseDefaults`.
+
+```json
+{
+  "MySQL": [
+    {
+      "version": "9.5.0",
+      "displayName": "MySQL 9.5.0",
+      "downloadUrl": "https://cdn.mysql.com/archives/mysql-9.5/mysql-9.5.0-winx64.zip",
+      "extractFolder": "mysql"
+    }
+  ],
+  "MariaDB": [
+    {
+      "version": "12.2.2",
+      "displayName": "MariaDB 12.2.2",
+      "downloadUrl": "https://archive.mariadb.org/mariadb-12.2.2/winx64-packages/mariadb-12.2.2-winx64.zip",
+      "extractFolder": "mariadb"
+    }
+  ],
+  "PostgreSQL": [
+    {
+      "version": "18.3",
+      "displayName": "PostgreSQL 18.3",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-18.3-1-windows-x64-binaries.zip",
+      "extractFolder": "pgsql"
+    }
+  ]
+}
+```
+
+Each engine entry contains an ordered list of versions. The first entry is treated as the default/recommended version.
+
+| Field            | Description                                                      |
+|------------------|------------------------------------------------------------------|
+| `version`        | Technical version number used for matching and persistence       |
+| `displayName`    | Human-readable label shown in the UI                             |
+| `downloadUrl`    | Download URL of the portable archive                             |
+| `extractFolder`  | Expected top-level folder name after extraction                  |
+
+At application startup, `App.xaml.cs` triggers an early validation of `Data/database-versions.json`.
+If the file is missing, malformed, or contains invalid entries (for example an invalid URL or empty engine list), the application shows a startup error dialog and exits cleanly.
 
 ---
 
