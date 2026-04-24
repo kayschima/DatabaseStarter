@@ -1,25 +1,55 @@
 {
   "MySQL": [
     {
+      "version": "9.7.0",
+      "displayName": "MySQL 9.7.0",
+      "downloadUrl": "https://cdn.mysql.com/Downloads/MySQL-9.7/mysql-9.7.0-winx64.zip",
+      "extractFolder": "mysql"
+    },
+    {
+      "version": "9.6.0",
+      "displayName": "MySQL 9.6.0",
+      "downloadUrl": "https://cdn.mysql.com/Downloads/MySQL-9.6/mysql-9.6.0-winx64.zip",
+      "extractFolder": "mysql"
+    },
+    {
       "version": "9.5.0",
       "displayName": "MySQL 9.5.0",
-      "downloadUrl": "https://cdn.mysql.com/archives/mysql-9.5/mysql-9.5.0-winx64.zip",
+      "downloadUrl": "https://cdn.mysql.com/Downloads/MySQL-9.5/mysql-9.5.0-winx64.zip",
+      "extractFolder": "mysql"
+    },
+    {
+      "version": "8.4.8",
+      "displayName": "MySQL 8.4.8",
+      "downloadUrl": "https://cdn.mysql.com/Downloads/MySQL-8.4/mysql-8.4.8-winx64.zip",
       "extractFolder": "mysql"
     },
     {
       "version": "8.4.7",
       "displayName": "MySQL 8.4.7",
-      "downloadUrl": "https://cdn.mysql.com/archives/mysql-8.4/mysql-8.4.7-winx64.zip",
+      "downloadUrl": "https://cdn.mysql.com/Downloads/MySQL-8.4/mysql-8.4.7-winx64.zip",
+      "extractFolder": "mysql"
+    },
+    {
+      "version": "8.0.45",
+      "displayName": "MySQL 8.0.45",
+      "downloadUrl": "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-8.0.45-winx64.zip",
       "extractFolder": "mysql"
     },
     {
       "version": "8.0.44",
       "displayName": "MySQL 8.0.44",
-      "downloadUrl": "https://cdn.mysql.com/archives/mysql-8.0/mysql-8.0.44-winx64.zip",
+      "downloadUrl": "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-8.0.44-winx64.zip",
       "extractFolder": "mysql"
     }
   ],
   "MariaDB": [
+    {
+      "version": "12.3.1",
+      "displayName": "MariaDB 12.3.1",
+      "downloadUrl": "https://archive.mariadb.org/mariadb-12.3.1/winx64-packages/mariadb-12.3.1-winx64.zip",
+      "extractFolder": "mariadb"
+    },
     {
       "version": "12.2.2",
       "displayName": "MariaDB 12.2.2",
