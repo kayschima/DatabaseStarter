@@ -17,9 +17,9 @@ The application manages standalone, portable instances of the following database
 
 | Engine       | Supported Versions                  | Default Port |
 |--------------|-------------------------------------|--------------|
-| 🐬 MySQL     | 9.5.0, 8.4.7, 8.0.44              | 3306         |
-| 🦭 MariaDB   | 12.2.2, 11.8.6, 11.4.10, 10.11.16 | 3307         |
-| 🐘 PostgreSQL | 18.3, 17.9, 16.13, 16.3, 15.17    | 5432         |
+| 🐬 MySQL     | 9.7.0 LTS, 9.6.0, 9.5.0, 8.4.8, 8.4.7, 8.0.45, 8.0.44 | 3306         |
+| 🦭 MariaDB   | 12.3.1, 12.2.2, 11.8.6, 11.4.10, 10.11.16 | 3307         |
+| 🐘 PostgreSQL | 18.4, 17.10, 16.14, 15.18, 14.23 | 5432         |
 
 ---
 
