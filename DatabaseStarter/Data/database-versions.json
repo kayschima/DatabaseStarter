@@ -77,33 +77,33 @@
   ],
   "PostgreSQL": [
     {
-      "version": "18.3",
-      "displayName": "PostgreSQL 18.3",
-      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-18.3-1-windows-x64-binaries.zip",
+      "version": "18.4",
+      "displayName": "PostgreSQL 18.4",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-18.4-1-windows-x64-binaries.zip",
       "extractFolder": "pgsql"
     },
     {
-      "version": "17.9",
-      "displayName": "PostgreSQL 17.9",
-      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-17.9-1-windows-x64-binaries.zip",
+      "version": "17.10",
+      "displayName": "PostgreSQL 17.10",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-17.10-1-windows-x64-binaries.zip",
       "extractFolder": "pgsql"
     },
     {
-      "version": "16.13",
-      "displayName": "PostgreSQL 16.13",
-      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-16.13-1-windows-x64-binaries.zip",
+      "version": "16.14",
+      "displayName": "PostgreSQL 16.14",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-16.14-1-windows-x64-binaries.zip",
       "extractFolder": "pgsql"
     },
     {
-      "version": "16.3",
-      "displayName": "PostgreSQL 16.3",
-      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-16.3-1-windows-x64-binaries.zip",
+      "version": "15.18",
+      "displayName": "PostgreSQL 15.18",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-15.18-1-windows-x64-binaries.zip",
       "extractFolder": "pgsql"
     },
     {
-      "version": "15.17",
-      "displayName": "PostgreSQL 15.17",
-      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-15.17-1-windows-x64-binaries.zip",
+      "version": "14.23",
+      "displayName": "PostgreSQL 14.23",
+      "downloadUrl": "https://get.enterprisedb.com/postgresql/postgresql-14.23-1-windows-x64-binaries.zip",
       "extractFolder": "pgsql"
     }
   ]
